@@ -22,7 +22,15 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	compileOnly 'org.projectlombok:lombok'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+// 타임리프에서 스프링시큐리티의 문법이나 형식을 지원하는 확장팩 라이브러리
+	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
+//  Temporary explicit version to fix Thymeleaf bug
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: '2.7.8'
+	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6:3.1.1.RELEASE'
+	implementation 'org.springframework.security:spring-security-test'
+    implementation 'org.jetbrains:annotations:20.1.0'
+    compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
