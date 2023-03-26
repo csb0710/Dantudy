@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import com.study.board2.dto.BoardDTO;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -39,12 +41,6 @@ public class Board {
 
     private Integer hits = 0;
 
-    private MultipartFile boardfile;
-
-    private String originalFileName;
-
-    private String storedFileName;
-
     private int fileAttached;
 
     @ManyToOne
@@ -57,5 +53,32 @@ public class Board {
 
     @OneToMany(mappedBy = "board" , cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<BoardFile> boardFiles = new ArrayList<>();
+
+    public static Board toSaveEntity(BoardDTO boardDTO) {
+        Board boardEntity = new Board();
+        boardEntity.setTitle(boardDTO.getTitle());
+        boardEntity.setContent(boardDTO.getContent());
+        boardEntity.setHits(0);
+        boardEntity.setFileAttached(0); // 파일 없음.
+        return boardEntity;
+    }
+
+    public static Board toUpdateEntity(BoardDTO boardDTO) {
+        Board boardEntity = new Board();
+        boardEntity.setId(boardDTO.getId());
+        boardEntity.setTitle(boardDTO.getTitle());
+        boardEntity.setContent(boardDTO.getContent());
+        boardEntity.setHits(boardDTO.getHits());
+        return boardEntity;
+    }
+
+    public static Board toSaveFileEntity(BoardDTO boardDTO) {
+        Board boardEntity = new Board();
+        boardEntity.setTitle(boardDTO.getTitle());
+        boardEntity.setContent(boardDTO.getContent());
+        boardEntity.setHits(0);
+        boardEntity.setFileAttached(1); // 파일 있음.
+        return boardEntity;
+    }
 
 }

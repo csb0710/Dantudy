@@ -35,24 +35,19 @@
 <header class="p-3 text-bg-dark">
     <div class="container">
         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-            <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+            <a href="/static" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
                 <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap">
                     <use xlink:href="#bootstrap"/>
                 </svg>
             </a>
 
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                <li><a th:href="@{/}" class="nav-link px-2 text-white">Home</a></li>
+                <li><a th:href="@{/static}" class="nav-link px-2 text-white">Home</a></li>
                 <li><a th:href="@{/board/list}" class="nav-link px-2 text-secondary">Board</a></li>
-                <li><a href="#" class="nav-link px-2 text-white">Pricing</a></li>
-                <li><a href="#" class="nav-link px-2 text-white">FAQs</a></li>
-                <li><a href="#" class="nav-link px-2 text-white">About</a></li>
+                <li><a href="#" class="nav-link px-2 text-white"></a></li>
+                <li><a href="#" class="nav-link px-2 text-white"></a></li>
+                <li><a href="#" class="nav-link px-2 text-white"></a></li>
             </ul>
-
-            <!--            <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">-->
-            <!--                <input type="search" class="form-control form-control-dark text-bg-dark" placeholder="Search..."-->
-            <!--                       aria-label="Search">-->
-            <!--            </form>-->
 
             <div class="text-end">
                 <!--                    <button type="button" class="btn btn-outline-light me-2">Login</button>-->
@@ -74,9 +69,8 @@
 <main class="mt-5 pt-5">
     <div class="container-fluid px-4">
         <h2>게시판</h2>
-        <form action="#" th:action="@{/board/modify}" th:object="${board}" method="post">
+        <form action="#" th:action="@{/board/form}" th:object="${board}" method="post" enctype="multipart/form-data">
             <input type="hidden" th:field="*{id}">
-            <input type="hidden" th:field="*{hits}">
             <div class="form-group">
                 <label for="title">제목</label>
                 <input type="text" class="form-control" th:classappend="${#fields.hasErrors('title')} ? 'is-invalid'"
@@ -92,6 +86,9 @@
                 <div class="invalid-feedback" th:if="${#fields.hasErrors('content')}" th:errors="*{content}">
                     내용 에러 메시지
                 </div>
+            </div>
+            <div style="margin-bottom : 20px">
+                <input type="file" name="boardFile" th:field="*{boardFile}">
             </div>
             <div>
                 <button type="summit" class="btn btn-primary">확인</button>

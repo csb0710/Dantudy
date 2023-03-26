@@ -26,11 +26,16 @@ public class Comment extends Base {
     @JoinColumn(name = "board_id")
     private Board board;
 
-    public static Comment toSaveEntity(CommentDTO commentDTO, Board board) {
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    public static Comment toSaveEntity(CommentDTO commentDTO, Board board, User user) {
         Comment comment = new Comment();
         comment.setCommentWriter(commentDTO.getCommentWriter());
         comment.setCommentContents(commentDTO.getCommentContents());
         comment.setBoard(board);
+        comment.setUser(user);
 
         return comment;
     }

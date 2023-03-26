@@ -16,8 +16,9 @@ public class CommentDTO {
     private String commentContents;
     private Integer boardId;
     private LocalDateTime commentCreatedTime;
+    private Long userId;
 
-    public static CommentDTO toCommentDTO(Comment comment, Integer boardId) {
+    public static CommentDTO toCommentDTO(Comment comment, Integer boardId, Long userId) {
         CommentDTO commentDTO = new CommentDTO();
         commentDTO.setId(comment.getId());
         commentDTO.setCommentWriter(comment.getCommentWriter());
@@ -26,6 +27,7 @@ public class CommentDTO {
         //사용하고 싶으면 service 메서드에 @Transactional 필수
         //commentDTO.setBoardId(new Long(comment.getBoard().getId()));
         commentDTO.setBoardId(boardId);
+        commentDTO.setUserId(userId);
 
         return commentDTO;
 

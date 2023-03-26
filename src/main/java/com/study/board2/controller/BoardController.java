@@ -1,9 +1,9 @@
 package com.study.board2.controller;
 
+import com.study.board2.dto.BoardDTO;
 import com.study.board2.dto.CommentDTO;
 import com.study.board2.entity.Board;
-import com.study.board2.entity.User;
-import com.study.board2.repository.CommentRepository;
+import com.study.board2.repository.UserRepository;
 import com.study.board2.service.BoardService;
 import com.study.board2.service.CommentService;
 import org.jetbrains.annotations.NotNull;
@@ -17,7 +17,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -30,6 +29,9 @@ public class BoardController {
     private BoardService boardService;
     @Autowired
     private CommentService commentService;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @GetMapping("/board/list")
     public String boardList(Model model,
@@ -57,7 +59,7 @@ public class BoardController {
         model.addAttribute("startPage", startPage);
         model.addAttribute("endPage", endPage);
 
-        return "boardlist";
+        return "board/boardlist";
     }
 
     @PostMapping("/account/login")
@@ -66,111 +68,48 @@ public class BoardController {
         return "account/login";
     }
 
-    @GetMapping("/board/view")
-    public String boardView(Model model, Integer id) {
-        boardService.checkHits(id);
-        model.addAttribute("board", boardService.boardView(id));
-
-        return "boardview";
-    }
-
-    @PostMapping("/board/remove")
-    public String boardRemove(Integer id, Board board) {
-        String tempPassword = boardService.boardView(id).getPassword();
-
-        if(!tempPassword.equals(board.getPassword())) {
-            return "wrongpassword";
-        }
-
-        boardService.removeView(id);
-
-        return "redirect:/board/list";
-    }
-
-    @GetMapping("/board/checkmodi/{id}")
-    public String checkModify(@PathVariable("id") Integer id, Model model) {
-        model.addAttribute("board", boardService.boardView(id));
-
-        return "checkmodify";
-    }
-
-    @GetMapping("/board/checkdel/{id}")
-    public String checkDelete(@PathVariable("id") Integer id, Model model) {
-        model.addAttribute("board", boardService.boardView(id));
-        System.out.println(id);
-
-        return "checkdelete";
-    }
-
-//    @PostMapping("/board/modify/{id}")
-//    public String boardModify(@PathVariable("id") Integer id, Model model, Board board) {
-//        String tempPassword = boardService.boardView(id).getPassword();
-//
-//        if(!tempPassword.equals(board.getPassword())) {
-//            return "wrongpassword";
-//        }
-//
-//        model.addAttribute("board", boardService.boardView(id));
-//
-//        return "boardmodify";
-//    }
-
-    @PostMapping("/board/update/{id}")
-    public String boardUpdate(@PathVariable("id") Integer id, Model model, Board board, MultipartFile file) throws IOException {
-        Board boardTemp = boardService.boardView(id);
-
-        boardTemp.setTitle(board.getTitle());
-        boardTemp.setContent(board.getContent());
-
-        boardService.write(boardTemp, file);
-
-        model.addAttribute("message", "글 작성이 완료되었습니다");
-        model.addAttribute("searchUrl", "/board/list");
-
-        System.out.println("작성되었습니다");
-
-        return "message";
-    }
-
     @GetMapping("/board/form")
     public String form(Model model, @RequestParam(required = false) Integer id, Authentication authentication) {
         if(id == null) {
-            Board exboard = new Board();
+            BoardDTO exboard = new BoardDTO();
             model.addAttribute("board", exboard);
             return "form";
         }
         else {
             String username = authentication.getName();
-            List<CommentDTO> commentDTOList = commentService.findAll(id);
+            Long userId = userRepository.findByUsername(username).getId();
+            List<CommentDTO> commentDTOList = commentService.findAll(id, userId);
             boardService.checkHits(id);
+            BoardDTO newBoardDTO = BoardDTO.toBoardDTO(boardService.boardView(id));
             model.addAttribute("commentUsername", username);
             model.addAttribute("commentList", commentDTOList);
-            model.addAttribute("board", boardService.boardView(id));
+            model.addAttribute("board", newBoardDTO);
 
-            return "form2";
+            return "board/form2";
         }
     }
 
     @PostMapping("/board/form")
-    public String postForm(@Valid Board board, @NotNull BindingResult bindingResult, Authentication authentication) {
+    public String postForm(@Valid BoardDTO boardDTO, @NotNull BindingResult bindingResult, Authentication authentication) throws IOException {
         if (bindingResult.hasErrors()) {
-            return "form";
+            return "board/form";
         }
 
         String username = authentication.getName();
-        boardService.write2(board, username);
+        boardService.write2(boardDTO, username);
         return "redirect:/board/list";
     }
 
     @GetMapping("/board/modify")
     public String modifyForm(@RequestParam(required = false) Integer id, Model model) {
-        model.addAttribute("board", boardService.boardView(id));
+        BoardDTO newBoardDTO = BoardDTO.toBoardDTO(boardService.boardView(id));
+        model.addAttribute("board", newBoardDTO);
 
-        return "form3";
+        return "board/form3";
     }
 
     @PostMapping("/board/modify")
-    public String modifyForm2(@Valid Board board, @NotNull BindingResult bindingResult, Authentication authentication, HttpServletRequest request) {
+    public String modifyForm2(@Valid BoardDTO boardDTO, @NotNull BindingResult bindingResult, Authentication authentication, HttpServletRequest request) throws IOException {
         if (bindingResult.hasErrors()) {
             return "form";
         }
@@ -178,13 +117,29 @@ public class BoardController {
         if (request.getHeader("Referer") != null) {
             String username = authentication.getName();
 
-            boardService.write2(board, username);
-            boardService.reduceHits(board.getId());
-            return "redirect:/board/form?id=" + board.getId();
+            boardService.update(boardDTO, username);
+            return "redirect:/board/form?id=" + boardDTO.getId();
         } else {
 
             return "redirect:/main";
         }
+    }
+
+    @GetMapping("/board/delete")
+    public String boardDelete(@RequestParam Integer id, HttpServletRequest request) {
+        if (request.getHeader("Referer") != null) {
+            String username = boardService.deleteView(id);
+
+            return "redirect:/admin/user/board?searchKeyword=" + username;
+        } else {
+
+            return "redirect:/main";
+        }
+    }
+
+    @GetMapping("/accessDenied")
+    public String accessDenied() {
+        return "admin/accessDenied";
     }
 
 }

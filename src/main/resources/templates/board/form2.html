@@ -27,14 +27,14 @@
 <header class="p-3 text-bg-dark">
     <div class="container">
         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-            <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+            <a href="/static" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
                 <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap">
                     <use xlink:href="#bootstrap"/>
                 </svg>
             </a>
 
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                <li><a th:href="@{/}" class="nav-link px-2 text-white">Home</a></li>
+                <li><a th:href="@{/static}" class="nav-link px-2 text-white">Home</a></li>
                 <li><a th:href="@{/board/list}" class="nav-link px-2 text-secondary">Board</a></li>
                 <li><a href="#" class="nav-link px-2 text-white">Pricing</a></li>
                 <li><a href="#" class="nav-link px-2 text-white">FAQs</a></li>
@@ -80,12 +80,15 @@
                     내용 에러 메시지
                 </div>
             </div>
+            <div th:if="*{fileAttached == 1}">
+                <img th:src="@{|/upload/*{storedFileName}|}" alt="">
+            </div>
             <div style="margin-bottom: 30px">
                 <label>조회수 : </label>
                 <input type="text" id="hits" th:field="*{hits}" style="border:0 solid black" readonly>
             </div>
             <div>
-                <a type="button" class="btn btn-primary" th:href="@{/board/list}">수정</a>
+                <a type="button" class="btn btn-primary" th:href="@{/board/modify(id=${board.id})}">수정</a>
             </div>
         </form>
     </div>
@@ -98,6 +101,7 @@
                     <th>작성자</th>
                     <th>내용</th>
                     <th>작성시간</th>
+                    <th></th>
                 </tr>
                 <tr th:each="comment: ${commentList}">
                     <td th:text="${comment.id}"></td>
@@ -122,6 +126,7 @@
 </body>
 <script th:inline="javascript">
     const commentWrite = () => {
+        // $('#comment-list').load(window.location.href+' #comment-list');
         const writer = [[${commentUsername}]];
         const contents = document.getElementById("commentContents").value;
         console.log(writer);
@@ -148,6 +153,11 @@
                     output += "<td>" + res[i].commentWriter + "</td>";
                     output += "<td>" + res[i].commentContents + "</td>";
                     output += "<td>" + res[i].commentCreatedTime + "</td>";
+                    output += "<td id=\"test1\">";
+                    output += "<form th:action=\"@{/comment/delete/{id}(id=${comment.id})}\" method=\"get\">";
+                    output += "<button type=\"summit\" class=\"btn btn-primary\">삭제</button>";
+                    output += "</form>";
+                    output += "</td>";
                     output += "</tr>";
                 }
 
@@ -159,7 +169,8 @@
                 console.log("요청실패", err);
             }
         });
-
+        // $('#comment-list').load(window.location.href+' #comment-list');
+        // document.location.reload();
     }
 </script>
 </html>

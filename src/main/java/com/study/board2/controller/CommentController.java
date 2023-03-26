@@ -1,8 +1,11 @@
 package com.study.board2.controller;
 
 import com.study.board2.dto.CommentDTO;
+import com.study.board2.entity.User;
+import com.study.board2.repository.UserRepository;
 import com.study.board2.service.BoardService;
 import com.study.board2.service.CommentService;
+import com.study.board2.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,12 +28,20 @@ public class CommentController {
     @Autowired
     private final BoardService boardService;
 
+    @Autowired
+    private final UserService userService;
+
+    @Autowired
+    private final UserRepository userRepository;
+
     @PostMapping("/save")
     public ResponseEntity save(@ModelAttribute CommentDTO commentDTO) {
+        Long userId = userRepository.findByUsername(commentDTO.getCommentWriter()).getId();
+        commentDTO.setUserId(userId);
         Long saveResult = commentService.save(commentDTO);
         if(saveResult != null) {
             // 성공 후 댓글 목록 리턴
-            List<CommentDTO> commentDTOList = commentService.findAll(commentDTO.getBoardId());
+            List<CommentDTO> commentDTOList = commentService.findAll(commentDTO.getBoardId(), userId);
             //boardService.reduceHits(commentDTO.getBoardId());
 
             return new ResponseEntity(commentDTOList, HttpStatus.OK);

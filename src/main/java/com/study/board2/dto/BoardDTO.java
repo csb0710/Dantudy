@@ -12,7 +12,8 @@ import org.springframework.web.multipart.MultipartFile;
 public class BoardDTO {
     private Integer id;
     private String title;
-    private String contents;
+    private String content;
+    private Integer hits;
 
     private MultipartFile boardFile; // save.html -> Controller 파일 담는 용도
     private String originalFileName; // 원본 파일 이름
@@ -28,7 +29,8 @@ public class BoardDTO {
         BoardDTO boardDTO = new BoardDTO();
         boardDTO.setId(board.getId());
         boardDTO.setTitle(board.getTitle());
-        boardDTO.setContents(board.getContent());
+        boardDTO.setContent(board.getContent());
+        boardDTO.setHits(board.getHits());
         if (board.getFileAttached() == 0) {
             boardDTO.setFileAttached(board.getFileAttached()); // 0
         } else {

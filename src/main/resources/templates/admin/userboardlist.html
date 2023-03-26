@@ -29,56 +29,10 @@
 
 <body class="sb-nav-fixed">
 
-<header class="p-3 text-bg-dark">
-    <div class="container">
-        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-            <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
-                <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap">
-                    <use xlink:href="#bootstrap"/>
-                </svg>
-            </a>
-
-            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                <li><a th:href="@{/}" class="nav-link px-2 text-white">Home</a></li>
-                <li><a th:href="@{/board/list}" class="nav-link px-2 text-secondary">Board</a></li>
-                <li><a href="#" class="nav-link px-2 text-white">Pricing</a></li>
-                <li><a href="#" class="nav-link px-2 text-white">FAQs</a></li>
-                <li><a href="#" class="nav-link px-2 text-white">About</a></li>
-            </ul>
-
-            <div class="text-end">
-                <!--                    <button type="button" class="btn btn-outline-light me-2">Login</button>-->
-                <a class="btn btn-outline-light me-2" th:href="@{/account/login}" sec:authorize="!isAuthenticated()">Login</a>
-                <a class="btn btn-warning" th:href="@{/account/register}" sec:authorize="!isAuthenticated()">회원가입</a>
-                <form class="form-inline my-2 my-lg-0" sec:authorize="isAuthenticated()" th:action="@{/logout}"
-                      method="post">
-                    <div style="margin-right: 5px" class="text-white">아이디 :</div>
-                    <span style="margin-right: 15px" class="text-white" sec:authentication="name">사용자</span>
-                    <div style="margin-right: 5px" class="text-white">권한 :</div>
-                    <span class="text-white mx-2" sec:authentication="principal.authorities" style="margin-right: 5px">권한</span>
-                    <button class="btn btn-secondary my-2 my-sm-0" type="submit">Logout</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</header>
 <main class="mt-5 pt-5">
     <div class="container-fluid px-4">
-        <h1 class="mt-4">Board</h1>
-        <div>
-            <form class="form-inline d-flex justify-content-end" th:action="@{/board/list}" method="get">
-                <div class="form-group mx-sm-3 mb-2">
-                    <input type="text" name="searchKeyword">
-                    <button type="submit">검색</button>
-                </div>
-            </form>
-        </div>
+        <h1 class="mt-4" th:text="${user.username}"></h1>
         <div class="card mb-4">
-            <div class="card-header">
-                <a type="button" class="btn btn-primary float-end" th:href="@{/board/form}">
-                    <i class="fas fa-edit"></i> 글 작성
-                </a>
-            </div>
             <div class="card-body">
                 <table class="table table-hover table-striped">
                     <thead>
@@ -87,6 +41,7 @@
                         <th>제목</th>
                         <th>작성자</th>
                         <th>조회수</th>
+                        <th></th>
                     </tr>
                     </thead>
                     <tbody class="table table-striped">
@@ -97,6 +52,9 @@
                         </td>
                         <td th:text="${board.user.nickname}"></td>
                         <td th:text="${board.hits}"></td>
+                        <td id="test1">
+                            <a type="button" class="btn btn-primary" th:href="@{/board/delete(id=${board.id})}">삭제</a>
+                        </td>
                     </tr>
                     </tbody>
                 </table>
@@ -104,7 +62,7 @@
                 <th:block th:each="page : ${#numbers.sequence(startPage, endPage)}"
                           class="pagination justify-content-center">
                     <a th:if="${page != nowPage}"
-                       th:href="@{/board/list(page = ${page-1}, searchKeyword = ${param.searchKeyword})}"
+                       th:href="@{/admin/user/board(page = ${page-1}, searchKeyword = ${param.searchKeyword})}"
                        th:text="${page}"></a>
                     <strong th:if="${page == nowPage}" th:text="${page}" style="color : red"></strong>
                 </th:block>
