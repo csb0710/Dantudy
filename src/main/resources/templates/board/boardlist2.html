@@ -66,37 +66,10 @@
     <div class="container-fluid px-4">
         <h1 class="mt-4">Board</h1>
         <div>
-            <form class="form-inline d-flex justify-content-end" th:action="@{/board/list}" th:object="${CodingStudy}" method="get">
-                <div>
-                    <div th:each="language : ${languages}" style="float: left; margin-right: 5px; margin-left: 5px">
-                        <input type="checkbox" th:field="*{languages}" th:value="${language.key}">
-                        <label th:for="${#ids.prev('languages')}" th:text="${language.value}"></label>
-                    </div>
-                    <div style="float: left; margin-right: 10px; margin-left: 10px">|</div>
-                    <div th:each="peri : ${period}" style="float: left; margin-right: 5px; margin-left: 5px">
-                        <input type="checkbox" th:field="*{period}" th:value="${peri.key}">
-                        <label th:for="${#ids.prev('period')}" th:text="${peri.value}"></label>
-                    </div>
-                    <div style="float: left; margin-right: 10px; margin-left: 10px">|</div>
-                    <div th:each="time : ${times}" style="float: left; margin-right: 5px; margin-left: 5px">
-                        <input type="checkbox" th:field="*{times}" th:value="${time.key}">
-                        <label th:for="${#ids.prev('times')}" th:text="${time.value}"></label>
-                    </div>
-                    <div style="float: left; margin-right: 10px; margin-left: 10px">|</div>
-                    <div th:each="ti : ${time}" style="float: left; margin-right: 5px; margin-left: 5px">
-                        <input type="checkbox" th:field="*{time}" th:value="${ti.key}">
-                        <label th:for="${#ids.prev('time')}" th:text="${ti.value}"></label>
-                    </div>
-                    <div style="float: left; margin-right: 10px; margin-left: 10px">|</div>
-                    <div th:each="people : ${people}" style="float: left; margin-right: 5px; margin-left: 5px">
-                        <input type="checkbox" th:field="*{people}" th:value="${people.key}">
-                        <label th:for="${#ids.prev('people')}" th:text="${people.value}"></label>
-                    </div>
-                    <div style="float: left; margin-right: 10px; margin-left: 10px">|</div>
-                </div>
-                <div class="form-group mx-sm-3 mb-2" style="float: left; margin-right: 5px; margin-left: 5px">
+            <form class="form-inline d-flex justify-content-end" th:action="@{/board/list}" method="get">
+                <div class="form-group mx-sm-3 mb-2">
                     <input type="text" name="searchKeyword">
-                    <button type="submit">검색 및 적용</button>
+                    <button type="submit">검색</button>
                 </div>
             </form>
         </div>
@@ -127,14 +100,6 @@
                     </tr>
                     </tbody>
                 </table>
-
-                <th:block th:each="page : ${#numbers.sequence(startPage, endPage)}"
-                          class="pagination justify-content-center">
-                    <a th:if="${page != nowPage}"
-                       th:href="@{/board/list(page = ${page-1}, searchKeyword = ${param.searchKeyword})}"
-                       th:text="${page}"></a>
-                    <strong th:if="${page == nowPage}" th:text="${page}" style="color : red"></strong>
-                </th:block>
             </div>
         </div>
     </div>

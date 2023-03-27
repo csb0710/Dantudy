@@ -69,53 +69,53 @@
 <main class="mt-5 pt-5">
     <div class="container-fluid px-4">
         <h2>게시판</h2>
-        <form action="#" th:action="@{/board/form}" th:object="${board}" method="post" enctype="multipart/form-data">
-            <input type="hidden" th:field="*{id}">
+        <form action="#" th:action="@{/board/form2}" th:object="${formDTO}" method="post" enctype="multipart/form-data">
+            <input type="hidden" th:field="*{boardDTO.id}">
             <div>
                 <div th:each="language : ${languages}" style="float: left; margin-right: 5px; margin-left: 5px">
-                    <input type="checkbox" th:field="*{languages}" th:value="${language.key}">
-                    <label th:for="${#ids.prev('languages')}" th:text="${language.value}"></label>
+                    <input type="checkbox" th:field="*{codingStudy.languages}" th:value="${language.key}">
+                    <label th:text="${language.value}"></label>
                 </div>
                 <div style="float: left; margin-right: 10px; margin-left: 10px">|</div>
                 <div th:each="peri : ${period}" style="float: left; margin-right: 5px; margin-left: 5px">
-                    <input type="checkbox" th:field="*{period}" th:value="${peri.key}">
-                    <label th:for="${#ids.prev('period')}" th:text="${peri.value}"></label>
+                    <input type="checkbox" th:field="*{codingStudy.period}" th:value="${peri.key}">
+                    <label th:text="${peri.value}"></label>
                 </div>
                 <div style="float: left; margin-right: 10px; margin-left: 10px">|</div>
                 <div th:each="time : ${times}" style="float: left; margin-right: 5px; margin-left: 5px">
-                    <input type="checkbox" th:field="*{times}" th:value="${time.key}">
-                    <label th:for="${#ids.prev('times')}" th:text="${time.value}"></label>
+                    <input type="checkbox" th:field="*{codingStudy.times}" th:value="${time.key}">
+                    <label th:text="${time.value}"></label>
                 </div>
                 <div style="float: left; margin-right: 10px; margin-left: 10px">|</div>
                 <div th:each="ti : ${time}" style="float: left; margin-right: 5px; margin-left: 5px">
-                    <input type="checkbox" th:field="*{time}" th:value="${ti.key}">
-                    <label th:for="${#ids.prev('time')}" th:text="${ti.value}"></label>
+                    <input type="checkbox" th:field="*{codingStudy.time}" th:value="${ti.key}">
+                    <label th:text="${ti.value}"></label>
                 </div>
                 <div style="float: left; margin-right: 10px; margin-left: 10px">|</div>
                 <div th:each="people : ${people}" style="float: left; margin-right: 5px; margin-left: 5px">
-                    <input type="checkbox" th:field="*{people}" th:value="${people.key}">
-                    <label th:for="${#ids.prev('people')}" th:text="${people.value}"></label>
+                    <input type="checkbox" th:field="*{codingStudy.people}" th:value="${people.key}">
+                    <label th:text="${people.value}"></label>
                 </div>
                 <div style="float: left; margin-right: 10px; margin-left: 10px">|</div>
             </div>
             <div class="form-group">
                 <label for="title">제목</label>
-                <input type="text" class="form-control" th:classappend="${#fields.hasErrors('title')} ? 'is-invalid'"
-                       id="title" th:field="*{title}">
-                <div class="invalid-feedback" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">
+                <input type="text" class="form-control" th:classappend="${#fields.hasErrors('boardDTO.title')} ? 'is-invalid'"
+                       id="title" th:field="*{boardDTO.title}">
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('boardDTO.title')}" th:errors="*{boardDTO.title}">
                     제목 에러 메시지
                 </div>
             </div>
             <div class="form-group">
                 <label for="content">내용</label>
-                <textarea class="form-control" th:classappend="${#fields.hasErrors('content')} ? 'is-invalid'"
-                          id="content" rows="3" th:field="*{content}"></textarea>
-                <div class="invalid-feedback" th:if="${#fields.hasErrors('content')}" th:errors="*{content}">
+                <textarea class="form-control" th:classappend="${#fields.hasErrors('boardDTO.content')} ? 'is-invalid'"
+                          id="content" rows="3" th:field="*{boardDTO.content}"></textarea>
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('boardDTO.content')}" th:errors="*{boardDTO.content}">
                     내용 에러 메시지
                 </div>
             </div>
             <div style="margin-bottom : 20px">
-                <input type="file" name="boardFile" th:field="*{boardFile}">
+                <input type="file" name="boardFile" th:field="*{boardDTO.boardFile}">
             </div>
             <div>
                 <button type="summit" class="btn btn-primary">확인</button>

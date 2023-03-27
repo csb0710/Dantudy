@@ -6,6 +6,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.study.board2.dto.BoardDTO;
+import com.study.board2.entity.Study.CodingStudy;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -33,15 +34,19 @@ public class Board {
 
     private String content;
 
-    private String password;
-
-    private String filename;
-
-    private String filepath;
-
     private Integer hits = 0;
 
     private int fileAttached;
+
+    private Integer languages;
+
+    private Integer period;
+
+    private Integer times;
+
+    private Integer time;
+
+    private Integer people;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -60,6 +65,12 @@ public class Board {
         boardEntity.setContent(boardDTO.getContent());
         boardEntity.setHits(0);
         boardEntity.setFileAttached(0); // 파일 없음.
+        boardEntity.setLanguages(boardDTO.getLanguages());
+        boardEntity.setPeriod(boardDTO.getPeriod());
+        boardEntity.setTimes(boardDTO.getTimes());
+        boardEntity.setTime(boardDTO.getTime());
+        boardEntity.setPeople(boardDTO.getPeople());
+
         return boardEntity;
     }
 
@@ -69,6 +80,12 @@ public class Board {
         boardEntity.setTitle(boardDTO.getTitle());
         boardEntity.setContent(boardDTO.getContent());
         boardEntity.setHits(boardDTO.getHits());
+        boardEntity.setLanguages(boardDTO.getLanguages());
+        boardEntity.setPeriod(boardDTO.getPeriod());
+        boardEntity.setTimes(boardDTO.getTimes());
+        boardEntity.setTime(boardDTO.getTime());
+        boardEntity.setPeople(boardDTO.getPeople());
+
         return boardEntity;
     }
 
@@ -78,6 +95,12 @@ public class Board {
         boardEntity.setContent(boardDTO.getContent());
         boardEntity.setHits(0);
         boardEntity.setFileAttached(1); // 파일 있음.
+        boardEntity.setLanguages(boardDTO.getLanguages());
+        boardEntity.setPeriod(boardDTO.getPeriod());
+        boardEntity.setTimes(boardDTO.getTimes());
+        boardEntity.setTime(boardDTO.getTime());
+        boardEntity.setPeople(boardDTO.getPeople());
+
         return boardEntity;
     }
 

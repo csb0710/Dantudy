@@ -64,6 +64,31 @@
         <form action="#" th:action="@{/board/form}" th:object="${board}" method="post">
             <input type="hidden" th:field="*{id}">
             <div class="form-group">
+                <label for="title">언어 : </label>
+                <input type="text" th:classappend="${#fields.hasErrors('languages')} ? 'is-invalid'"
+                       id="language" th:value="${languages}" style="border:0 solid black" readonly>
+            </div>
+            <div class="form-group">
+                <label for="title">기간 : </label>
+                <input type="text" th:classappend="${#fields.hasErrors('period')} ? 'is-invalid'"
+                       id="period" th:value="${period}" style="border:0 solid black" readonly>
+            </div>
+            <div class="form-group">
+                <label for="title">주차별 횟수 : </label>
+                <input type="text" th:classappend="${#fields.hasErrors('times')} ? 'is-invalid'"
+                       id="times" th:value="${times}" style="border:0 solid black" readonly>
+            </div>
+            <div class="form-group">
+                <label for="title">시간 때 : </label>
+                <input type="text" th:classappend="${#fields.hasErrors('time')} ? 'is-invalid'"
+                       id="time" th:value="${time}" style="border:0 solid black" readonly>
+            </div>
+            <div class="form-group">
+                <label for="title">사람 수 : </label>
+                <input type="text" th:classappend="${#fields.hasErrors('people')} ? 'is-invalid'"
+                     id="people" th:value="${people}" style="border:0 solid black" readonly>
+            </div>
+            <div class="form-group" style="margin-top: 50px">
                 <label for="title">제목 : </label>
                 <input type="text" th:classappend="${#fields.hasErrors('title')} ? 'is-invalid'"
                        id="title" th:field="*{title}" style="border:0 solid black" readonly>
