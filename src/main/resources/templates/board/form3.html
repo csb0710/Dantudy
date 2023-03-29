@@ -74,7 +74,7 @@
 <main class="mt-5 pt-5">
     <div class="container-fluid px-4">
         <h2>게시판</h2>
-        <form action="#" th:action="@{/board/modify}" th:object="${board}" method="post" enctype="multipart/form-data">
+        <form id="submitForm" action="#" th:action="@{/board/modify}" th:object="${board}" method="post" enctype="multipart/form-data">
             <input type="hidden" th:field="*{id}">
             <input type="hidden" th:field="*{hits}">
             <div class="form-group">
@@ -97,11 +97,20 @@
                 <input type="file" name="boardFile" th:field="*{boardFile}">
             </div>
             <div>
-                <button type="summit" class="btn btn-primary">확인</button>
+                <div onclick="boardWrite()" class="btn btn-primary">확인</div>
                 <a type="button" class="btn btn-primary" th:href="@{/board/list}">취소</a>
             </div>
         </form>
     </div>
 </main>
 </body>
+<script th:inline="javascript">
+    const boardWrite = () => {
+        if(document.getElementById("title").value.length < 2) {
+            alert("제목을 2글자 이상 입력해주세요");
+        } else {
+            document.getElementById("submitForm").submit();
+        }
+    }
+</script>
 </html>

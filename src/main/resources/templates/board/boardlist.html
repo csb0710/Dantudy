@@ -39,7 +39,7 @@
             </a>
 
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                <li><a th:href="@{/static}" class="nav-link px-2 text-white">Home</a></li>
+                <li><a th:href="@{/}" class="nav-link px-2 text-white">Home</a></li>
                 <li><a th:href="@{/board/list}" class="nav-link px-2 text-secondary">Board</a></li>
                 <li><a href="#" class="nav-link px-2 text-white">Pricing</a></li>
                 <li><a href="#" class="nav-link px-2 text-white">FAQs</a></li>
@@ -95,8 +95,8 @@
                     <div style="float: left; margin-right: 10px; margin-left: 10px">|</div>
                 </div>
                 <div class="form-group mx-sm-3 mb-2" style="float: left; margin-right: 5px; margin-left: 5px">
-                    <input type="text" name="searchKeyword">
-                    <button type="submit">검색 및 적용</button>
+                    <input style="margin-right: 10px" type="text" name="searchKeyword">
+                    <button class="btn btn-primary float-end" type="submit">검색 및 적용</button>
                 </div>
             </form>
         </div>
@@ -131,7 +131,7 @@
                 <th:block th:each="page : ${#numbers.sequence(startPage, endPage)}"
                           class="pagination justify-content-center">
                     <a th:if="${page != nowPage}"
-                       th:href="@{/board/list(page = ${page-1}, searchKeyword = ${param.searchKeyword})}"
+                       th:href="@{/board/list(page = ${page}-1, searchKeyword = ${param.searchKeyword})}"
                        th:text="${page}"></a>
                     <strong th:if="${page == nowPage}" th:text="${page}" style="color : red"></strong>
                 </th:block>

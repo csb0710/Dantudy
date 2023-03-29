@@ -42,7 +42,7 @@
             </a>
 
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                <li><a th:href="@{/static}" class="nav-link px-2 text-white">Home</a></li>
+                <li><a th:href="@{/}" class="nav-link px-2 text-white">Home</a></li>
                 <li><a th:href="@{/board/list}" class="nav-link px-2 text-secondary">Board</a></li>
                 <li><a href="#" class="nav-link px-2 text-white"></a></li>
                 <li><a href="#" class="nav-link px-2 text-white"></a></li>
@@ -69,7 +69,7 @@
 <main class="mt-5 pt-5">
     <div class="container-fluid px-4">
         <h2>게시판</h2>
-        <form action="#" th:action="@{/board/form}" th:object="${board}" method="post" enctype="multipart/form-data">
+        <form id="submitForm" action="#" th:action="@{/board/form}" th:object="${board}" method="post" enctype="multipart/form-data">
             <input type="hidden" th:field="*{id}">
             <div>
                 <div th:each="language : ${languages}" style="float: left; margin-right: 5px; margin-left: 5px">
@@ -96,8 +96,9 @@
                     <input type="checkbox" th:field="*{people}" th:value="${people.key}">
                     <label th:for="${#ids.prev('people')}" th:text="${people.value}"></label>
                 </div>
-                <div style="float: left; margin-right: 10px; margin-left: 10px">|</div>
+                <div style="margin-right: 10px; margin-left: 10px">|</div>
             </div>
+            <div>&nbsp;</div>
             <div class="form-group">
                 <label for="title">제목</label>
                 <input type="text" class="form-control" th:classappend="${#fields.hasErrors('title')} ? 'is-invalid'"
@@ -118,11 +119,24 @@
                 <input type="file" name="boardFile" th:field="*{boardFile}">
             </div>
             <div>
-                <button type="summit" class="btn btn-primary">확인</button>
+                <div onclick="boardWrite()" class="btn btn-primary">확인</div>
                 <a type="button" class="btn btn-primary" th:href="@{/board/list}">취소</a>
             </div>
         </form>
     </div>
 </main>
 </body>
+<script th:inline="javascript">
+    const boardWrite = () => {
+        // if(document.getElementById("title").value.trim() == '') {
+        //     alert("제목은 필수 입력 사항입니다");
+        // } else
+        if(document.getElementById("title").value.length < 2) {
+            alert("제목을 2글자 이상 입력해주세요");
+        } else {
+            document.getElementById("submitForm").submit();
+        }
+    }
+
+</script>
 </html>
