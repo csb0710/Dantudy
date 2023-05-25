@@ -22,7 +22,7 @@
         <h1 class="h3 mb-3 font-weight-normal">회원가입</h1>
         <div>
             <label for="username" class="sr-only">id</label>
-            <input type="text" name="username" id="username" class="form-control" placeholder="Username" required autofocus>
+            <input type="text" name="username" id="username" class="form-control" placeholder="id" required autofocus>
             <div th:if="${valid_usernameif}" class="alert alert-danger" role="alert">
                 <span th:text="${valid_username}"></span>
             </div>
@@ -49,11 +49,20 @@
                 <span th:text="${valid_password}"></span>
             </div>
         </div>
-    <!--    <div class="checkbox mb-3">-->
-    <!--        <label>-->
-    <!--            <input type="checkbox" value="remember-me"> Remember me-->
-    <!--        </label>-->
-    <!--    </div>-->
+
+        <div>
+            <label for="inputGender" class="sr-only">성별</label>
+            <select name="gender" id="inputGender" class="form-control" required>
+                <option value="">성별 선택</option>
+                <option value="남성">남성</option>
+                <option value="여성">여성</option>
+            </select>
+        </div>
+
+        <div>
+            <label for="inputMajor" class="sr-only">전공</label>
+            <input type="text" name="major" id="inputMajor" class="form-control" placeholder="전공" required>
+        </div>
         <button class="btn btn-lg btn-primary btn-block" type="submit">회원가입</button>
         <p class="mt-5 mb-3 text-muted">&copy; 2017-2018</p>
     </form>

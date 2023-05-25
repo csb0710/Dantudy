@@ -1,6 +1,6 @@
 package com.study.board2.dto;
 
-import com.study.board2.entity.Study.CodingStudy;
+import com.study.board2.entity.Study.CodingStudyForm;
 import lombok.*;
 
 @Getter
@@ -10,11 +10,11 @@ import lombok.*;
 public class FormDTO {
     BoardDTO boardDTO;
 
-    CodingStudy codingStudy;
+    CodingStudyForm codingStudy;
 
     public FormDTO() {
         boardDTO = new BoardDTO();
-        codingStudy = new CodingStudy();
+        codingStudy = new CodingStudyForm();
     }
 
 }

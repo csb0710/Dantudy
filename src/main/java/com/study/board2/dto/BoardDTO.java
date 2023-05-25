@@ -1,8 +1,11 @@
 package com.study.board2.dto;
 
 import com.study.board2.entity.Board;
+import com.study.board2.entity.User;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -11,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 @AllArgsConstructor
 public class BoardDTO {
     private Integer id;
+    private User user;
     private String title;
     private String content;
     private Integer hits;
@@ -20,7 +24,7 @@ public class BoardDTO {
     private String storedFileName; // 서버 저장용 파일 이름
     private int fileAttached; // 파일 첨부 여부(첨부 1, 미첨부 0)
 
-    private Integer languages;
+    //private Integer languages;
 
     private Integer period;
 
@@ -29,6 +33,12 @@ public class BoardDTO {
     private Integer time;
 
     private Integer people;
+
+    private LocalDateTime createAt;
+
+    private Integer type;
+
+    private Integer completed;
 
     public BoardDTO(Integer id, String boardTitle) {
         this.id = id;
@@ -41,6 +51,11 @@ public class BoardDTO {
         boardDTO.setTitle(board.getTitle());
         boardDTO.setContent(board.getContent());
         boardDTO.setHits(board.getHits());
+        boardDTO.setCreateAt(board.getCreatedAt());
+        boardDTO.setUser(board.getUser());
+        boardDTO.setType(board.getType());
+        boardDTO.setCreateAt(board.getCreatedAt());
+        boardDTO.setCompleted(board.getCompleted());
         if (board.getFileAttached() == 0) {
             boardDTO.setFileAttached(board.getFileAttached()); // 0
         } else {
@@ -50,12 +65,27 @@ public class BoardDTO {
             boardDTO.setStoredFileName(board.getBoardFiles().get(0).getStoredFileName());
         }
 
-        boardDTO.setLanguages(board.getLanguages());
+        //boardDTO.setLanguages(board.getLanguages());
         boardDTO.setPeriod(board.getPeriod());
         boardDTO.setTimes(board.getTimes());
         boardDTO.setTime(board.getTime());
         boardDTO.setPeople(board.getPeople());
 
         return boardDTO;
+    }
+
+    public void checkNull() {
+        if(this.period == null) {
+            this.period = 1;
+        }
+        if(this.times == null) {
+            this.times = 1;
+        }
+        if(this.time == null) {
+            this.time = 1;
+        }
+        if(this.people == null) {
+            this.people = 1;
+        }
     }
 }

@@ -4,8 +4,7 @@ import com.study.board2.dto.BoardDTO;
 import com.study.board2.dto.FormDTO;
 import com.study.board2.entity.Board;
 import com.study.board2.entity.BoardFile;
-import com.study.board2.entity.Study.CodingStudy;
-import com.study.board2.entity.User;
+import com.study.board2.entity.Study.CodingStudyForm;
 import com.study.board2.repository.BoardFileRepository;
 import com.study.board2.repository.BoardRepository;
 import com.study.board2.repository.UserRepository;
@@ -19,9 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.time.LocalDateTime;
 
 @Service
 public class BoardService {
@@ -34,41 +31,44 @@ public class BoardService {
     @Autowired
     private BoardFileRepository boardFileRepository;
 
-    public Page<Board> boardList(Pageable pageable) {
+    public Page<Board> boardList(Integer type, Pageable pageable) {
+        Specification<Board> spec = (root, query, criteriaBuilder) -> null;
 
-        return boardRepository.findAll(pageable);
+        spec = spec.and(BoardSpecification.equalType(type));
+        return boardRepository.findAll(spec, pageable);
     }
     public void write2(BoardDTO boardDTO, String username) throws IOException {
-        if(boardDTO.getBoardFile().isEmpty()) {
+//        if(boardDTO.getBoardFile().isEmpty()) {
             Board board = Board.toSaveEntity(boardDTO);
 
             board.setUser(userRepository.findByUsername(username));
+            board.setCreatedAt(LocalDateTime.now());
             boardRepository.save(board);
-        }
-        else {
-            MultipartFile boardFile = boardDTO.getBoardFile();
-            String originalFileName = boardFile.getOriginalFilename();
-            String storedFileName = System.currentTimeMillis() + "_" + originalFileName;
-            String savePath = "/Users/csb0710/Pictures/" + storedFileName;
-
-            boardFile.transferTo(new File(savePath));
-            Board board = Board.toSaveFileEntity(boardDTO);
-            board.setUser(userRepository.findByUsername(username));
-
-
-            Integer savedId = boardRepository.save(board).getId();
-            Board getBoard = boardRepository.findById(savedId).get();
-            System.out.println(savedId);
-            BoardFile newBoardFile = BoardFile.toBoardFile(getBoard, originalFileName, storedFileName);
-
-            boardFileRepository.save(newBoardFile);
-
-        }
+//        }
+//        else {
+//            MultipartFile boardFile = boardDTO.getBoardFile();
+//            String originalFileName = boardFile.getOriginalFilename();
+//            String storedFileName = System.currentTimeMillis() + "_" + originalFileName;
+//            String savePath = "/Users/csb0710/Pictures/" + storedFileName;
+//
+//            boardFile.transferTo(new File(savePath));
+//            Board board = Board.toSaveFileEntity(boardDTO);
+//            board.setUser(userRepository.findByUsername(username));
+//            board.setCreatedAt(LocalDateTime.now());
+//
+//            Integer savedId = boardRepository.save(board).getId();
+//            Board getBoard = boardRepository.findById(savedId).get();
+//            System.out.println(savedId);
+//            BoardFile newBoardFile = BoardFile.toBoardFile(getBoard, originalFileName, storedFileName);
+//
+//            boardFileRepository.save(newBoardFile);
+//
+//        }
     }
 
     public void write3(FormDTO formDTO, String username) throws IOException {
         BoardDTO boardDTO = formDTO.getBoardDTO();
-        CodingStudy codingStudy = formDTO.getCodingStudy();
+        CodingStudyForm codingStudy = formDTO.getCodingStudy();
 
         if(boardDTO.getBoardFile().isEmpty()) {
             Board board = Board.toSaveEntity(boardDTO);
@@ -151,17 +151,17 @@ public class BoardService {
         return username;
     }
 
-    public Page<Board> boardSearchList(String searchKeyword, Pageable pageable) {
+    public Page<Board> boardSearchList(String searchKeyword, Integer type, Pageable pageable) {
 
-        return boardRepository.findByTitleContaining(searchKeyword, pageable);
+        return boardRepository.findByTitleContainingAndType(searchKeyword, type, pageable);
     }
 
-    public Page<Board> coditionFind(CodingStudy codingStudy, String searchKeyword, Pageable pageable) {
+    public Page<Board> coditionFind(CodingStudyForm codingStudy, Integer type, String searchKeyword, Pageable pageable) {
         codingStudy.checkNull();
 
         Specification<Board> spec = (root, query, criteriaBuilder) -> null;
 
-        spec = spec.and(BoardSpecification.equalLaguage(codingStudy)).and(BoardSpecification.equalPeriod(codingStudy))
+        spec = spec.and(BoardSpecification.equalType(type)).and(BoardSpecification.equalPeriod(codingStudy))
                 .and(BoardSpecification.equalTimes(codingStudy)).and(BoardSpecification.equalTime(codingStudy))
                 .and(BoardSpecification.equalPeople(codingStudy));
 

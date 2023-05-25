@@ -32,6 +32,7 @@
 <header class="p-3 text-bg-dark">
     <div class="container">
         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+            <a th:href="@{/}" class="nav-link px-2 text-white"><h1>Dantudy</h1></a>
             <a href="/static" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
                 <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap">
                     <use xlink:href="#bootstrap"/>
@@ -39,23 +40,23 @@
             </a>
 
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                <li><a th:href="@{/}" class="nav-link px-2 text-white">Home</a></li>
-                <li><a th:href="@{/board/list}" class="nav-link px-2 text-secondary">Board</a></li>
-                <li><a href="#" class="nav-link px-2 text-white">Pricing</a></li>
-                <li><a href="#" class="nav-link px-2 text-white">FAQs</a></li>
-                <li><a href="#" class="nav-link px-2 text-white">About</a></li>
+                <li><a th:href="@{/}" class="nav-link px-2 text-white"></a></li>
+                <li><a th:href="@{/board/list}" class="nav-link px-2 text-secondary"></a></li>
+                <li><a href="#" class="nav-link px-2 text-white"></a></li>
+                <li><a href="#" class="nav-link px-2 text-white"></a></li>
+                <li><a href="#" class="nav-link px-2 text-white"></a></li>
             </ul>
 
-            <div class="text-end">
-                <!--                    <button type="button" class="btn btn-outline-light me-2">Login</button>-->
+            <div>
                 <a class="btn btn-outline-light me-2" th:href="@{/account/login}" sec:authorize="!isAuthenticated()">Login</a>
                 <a class="btn btn-warning" th:href="@{/account/register}" sec:authorize="!isAuthenticated()">회원가입</a>
                 <form class="form-inline my-2 my-lg-0" sec:authorize="isAuthenticated()" th:action="@{/logout}"
                       method="post">
-                    <div style="margin-right: 5px" class="text-white">아이디 :</div>
-                    <span style="margin-right: 15px" class="text-white" sec:authentication="name">사용자</span>
-                    <div style="margin-right: 5px" class="text-white">권한 :</div>
-                    <span class="text-white mx-2" sec:authentication="principal.authorities" style="margin-right: 5px">권한</span>
+                    <div style="float: left; margin-right: 5px" class="text-white">아이디 :</div>
+                    <span style="float: left; margin-right: 15px" class="text-white" sec:authentication="name">사용자</span>
+                    <div style="float: left; margin-right: 5px" class="text-white">권한 :</div>
+                    <span class="text-white mx-2" style="float: left;" sec:authentication="principal.authorities">권한</span>
+
                     <button class="btn btn-secondary my-2 my-sm-0" type="submit">Logout</button>
                 </form>
             </div>
@@ -64,14 +65,11 @@
 </header>
 <main class="mt-5 pt-5">
     <div class="container-fluid px-4">
-        <h1 class="mt-4">Board</h1>
+        <h1 th:text="${type == 1 ? '자격증' : type == 2 ? '프로그래밍' : type == 3 ? '독서' : '스포츠'}"></h1>
         <div>
-            <form class="form-inline d-flex justify-content-end" th:action="@{/board/list}" th:object="${CodingStudy}" method="get">
+            <form class="form-inline d-flex justify-content-end" th:action="@{/board/list(type=${type})}" th:object="${CodingStudy}" method="get">
+                <input type="hidden" name="type" th:value="${type}">
                 <div>
-                    <div th:each="language : ${languages}" style="float: left; margin-right: 5px; margin-left: 5px">
-                        <input type="checkbox" th:field="*{languages}" th:value="${language.key}">
-                        <label th:for="${#ids.prev('languages')}" th:text="${language.value}"></label>
-                    </div>
                     <div style="float: left; margin-right: 10px; margin-left: 10px">|</div>
                     <div th:each="peri : ${period}" style="float: left; margin-right: 5px; margin-left: 5px">
                         <input type="checkbox" th:field="*{period}" th:value="${peri.key}">
@@ -102,7 +100,7 @@
         </div>
         <div class="card mb-4">
             <div class="card-header">
-                <a type="button" class="btn btn-primary float-end" th:href="@{/board/form}">
+                <a type="button" class="btn btn-primary float-end" th:href="@{/board/form(type=${type})}">
                     <i class="fas fa-edit"></i> 글 작성
                 </a>
             </div>
@@ -139,5 +137,6 @@
         </div>
     </div>
 </main>
+
 </body>
 </html>

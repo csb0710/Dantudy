@@ -50,6 +50,10 @@ public class AccountController {
 
             return "account/register";
         }
+        user.setCounting(0);
+        user.setRating("평가 등급");
+        user.setScore(0.0);
+        user.setScore2(0);
 
         userService.save(user);
 

@@ -30,12 +30,15 @@ public class Comment extends Base {
     @JoinColumn(name = "user_id")
     private User user;
 
+    private String userRating;
+
     public static Comment toSaveEntity(CommentDTO commentDTO, Board board, User user) {
         Comment comment = new Comment();
         comment.setCommentWriter(commentDTO.getCommentWriter());
         comment.setCommentContents(commentDTO.getCommentContents());
         comment.setBoard(board);
         comment.setUser(user);
+        comment.setUserRating(commentDTO.getUserRating());
 
         return comment;
     }

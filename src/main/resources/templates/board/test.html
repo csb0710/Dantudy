@@ -33,10 +33,6 @@
 <body>
 <form th:action="@{/board/test2}" th:object="${CodingStudy}" method="post">
     <div>
-        <div th:each="language : ${languages}" style="float: left; margin-right: 5px; margin-left: 5px">
-            <input type="checkbox" th:field="*{languages}" th:value="${language.key}">
-            <label th:for="${#ids.prev('languages')}" th:text="${language.value}"></label>
-        </div>
         <div style="float: left; margin-right: 10px; margin-left: 10px">|</div>
         <div th:each="peri : ${period}" style="float: left; margin-right: 5px; margin-left: 5px">
             <input type="checkbox" th:field="*{period}" th:value="${peri.key}">

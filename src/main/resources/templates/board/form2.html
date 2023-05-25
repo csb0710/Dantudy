@@ -27,6 +27,7 @@
 <header class="p-3 text-bg-dark">
     <div class="container">
         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+            <a th:href="@{/}" class="nav-link px-2 text-white"><h1>Dantudy</h1></a>
             <a href="/static" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
                 <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap">
                     <use xlink:href="#bootstrap"/>
@@ -34,11 +35,11 @@
             </a>
 
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                <li><a th:href="@{/static}" class="nav-link px-2 text-white">Home</a></li>
-                <li><a th:href="@{/board/list}" class="nav-link px-2 text-secondary">Board</a></li>
-                <li><a href="#" class="nav-link px-2 text-white">Pricing</a></li>
-                <li><a href="#" class="nav-link px-2 text-white">FAQs</a></li>
-                <li><a href="#" class="nav-link px-2 text-white">About</a></li>
+                <li><a th:href="@{/}" class="nav-link px-2 text-white"></a></li>
+                <li><a th:href="@{/board/list}" class="nav-link px-2 text-secondary"></a></li>
+                <li><a href="#" class="nav-link px-2 text-white"></a></li>
+                <li><a href="#" class="nav-link px-2 text-white"></a></li>
+                <li><a href="#" class="nav-link px-2 text-white"></a></li>
             </ul>
 
             <div class="text-end">
@@ -61,13 +62,9 @@
 <main class="mt-5 pt-5">
     <div class="container-fluid px-4">
         <h2 style="margin-bottom: 50px">게시글</h2>
+
         <form action="#" th:action="@{/board/form}" th:object="${board}" method="post">
             <input type="hidden" th:field="*{id}">
-            <div class="form-group">
-                <label for="title">언어 : </label>
-                <input type="text" th:classappend="${#fields.hasErrors('languages')} ? 'is-invalid'"
-                       id="language" th:value="${languages}" style="border:0 solid black" readonly>
-            </div>
             <div class="form-group">
                 <label for="title">기간 : </label>
                 <input type="text" th:classappend="${#fields.hasErrors('period')} ? 'is-invalid'"
@@ -112,8 +109,19 @@
                 <label>조회수 : </label>
                 <input type="text" id="hits" th:field="*{hits}" style="border:0 solid black" readonly>
             </div>
+            <div style="margin-bottom: 30px">
+                <label>작성시간 : </label>
+                <input type="text" id="createAt" th:field="*{createAt}" style="border:0 solid black" readonly>
+            </div>
+            <div style="margin-bottom: 30px">
+                <label>작성자 : </label>
+                <input type="text" id="maker" th:field="*{user.nickname}" style="border:0 solid black" readonly>
+                <a th:href = "@{/users/inform(id=*{user.id})}">정보 보기</a>
+            </div>
+
             <div>
-                <a type="button" class="btn btn-primary" th:href="@{/board/modify(id=${board.id})}">수정</a>
+                <a type="button" class="btn btn-primary" th:href="@{/board/modify(id=${board.id}, type=${board.type})}">수정</a>
+                <a type="button" class="btn btn-primary" th:href="@{/board/delete(id=${board.id})}">삭제</a>
             </div>
         </form>
     </div>
@@ -122,27 +130,40 @@
         <div id="comment-list">
             <table class="table table-hover table-striped">
                 <tr>
-                    <th>댓글번호</th>
                     <th>작성자</th>
                     <th>내용</th>
                     <th>작성시간</th>
+                    <th>등급</th>
+                    <th>  </th>
+                    <th>  </th>
                     <th></th>
                 </tr>
                 <tr th:each="comment: ${commentList}">
-                    <td th:text="${comment.id}"></td>
                     <td id="target" th:text="${comment.commentWriter}"></td>
                     <td th:text="${comment.commentContents}"></td>
                     <td th:text="${comment.commentCreatedTime}"></td>
+                    <td th:text="${comment.userRating}"></td>
+                    <td>
+                        <a th:href = "@{/users/inform(commentId=${comment.id})}">정보 보기</a>
+                    </td>
                     <td id="test1">
+                        <form th:action="@{/board/acceptStudy}" method="post" th:if="${board.user.id == currentUserId}">
+                            <input type="hidden" name="boardId" th:value="${board.id}" />
+                            <input type="hidden" name="commentId" th:value="${comment.id}" />
+                            <button type="submit" class="btn btn-primary">수락</button>
+                        </form>
+
+                    </td>
+                    <td>
                         <form th:action="@{/comment/delete/{id}(id=${comment.id})}" method="get">
                             <button type="summit" class="btn btn-primary">삭제</button>
                         </form>
                     </td>
+
                 </tr>
             </table>
         </div>
         <div id="comment-write">
-            <!--        <input type="text" id="commentWriter" placeholder="작성자">-->
             <input type="text" id="commentContents" placeholder="내용">
             <button id="comment-write-btn" onclick="commentWrite()">댓글작성</button>
         </div>
@@ -151,19 +172,20 @@
 </body>
 <script th:inline="javascript">
     const commentWrite = () => {
-        // $('#comment-list').load(window.location.href+' #comment-list');
         const writer = [[${commentUsername}]];
         const contents = document.getElementById("commentContents").value;
         console.log(writer);
         console.log(contents);
         const id = [[${board.id}]]; // 게시글 번호
+        const userRating = [[${currentUserRating}]];
         $.ajax({
             type: "post",
             url: "/comment/save",
             data: {
                 "commentWriter": writer,
                 "commentContents": contents,
-                "boardId": id
+                "boardId": id,
+                "userRating" : userRating
             },
             success: function (res) {
                 console.log("요청성공", res);
@@ -172,12 +194,20 @@
                 output += "<th>작성자</th>";
                 output += "<th>내용</th>";
                 output += "<th>작성시간</th></tr>";
+                output += "<th>등급</th>";
+                output += "<th>  </th>";
+                output += "<th>  </th>";
+                output += "<th></th>";
                 for (let i in res) {
                     output += "<tr>";
                     output += "<td>" + res[i].id + "</td>";
                     output += "<td>" + res[i].commentWriter + "</td>";
                     output += "<td>" + res[i].commentContents + "</td>";
                     output += "<td>" + res[i].commentCreatedTime + "</td>";
+                    output += "<td>" + res[i].userRating + "</td>";
+                    output += "<td>";
+                    output += "<a th:href=\"@{/users/inform(commentId=${comment.id})}\">정보 보기</a>";
+                    output += "</td>";
                     output += "<td id=\"test1\">";
                     output += "<form th:action=\"@{/comment/delete/{id}(id=${comment.id})}\" method=\"get\">";
                     output += "<button type=\"summit\" class=\"btn btn-primary\">삭제</button>";
@@ -194,8 +224,9 @@
                 console.log("요청실패", err);
             }
         });
-        // $('#comment-list').load(window.location.href+' #comment-list');
-        // document.location.reload();
+        $('#comment-list').load(window.location.href+' #comment-list');
+
+        location.reload();
 
 
     }

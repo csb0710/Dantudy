@@ -1,7 +1,9 @@
 package com.study.board2.controller;
 
 import com.study.board2.dto.CommentDTO;
+import com.study.board2.entity.Board;
 import com.study.board2.entity.User;
+import com.study.board2.repository.BoardRepository;
 import com.study.board2.repository.UserRepository;
 import com.study.board2.service.BoardService;
 import com.study.board2.service.CommentService;
@@ -26,6 +28,8 @@ public class CommentController {
     private final CommentService commentService;
 
     @Autowired
+    private final BoardRepository boardRepository;
+    @Autowired
     private final BoardService boardService;
 
     @Autowired
@@ -37,7 +41,12 @@ public class CommentController {
     @PostMapping("/save")
     public ResponseEntity save(@ModelAttribute CommentDTO commentDTO) {
         Long userId = userRepository.findByUsername(commentDTO.getCommentWriter()).getId();
+        Board board = boardService.boardView(commentDTO.getBoardId());
+        board.setHits(board.getHits()-1);
+        boardRepository.save(board);
+
         commentDTO.setUserId(userId);
+        commentDTO.setUserRating(userRepository.findById(userId).get().getRating());
         Long saveResult = commentService.save(commentDTO);
         if(saveResult != null) {
             // 성공 후 댓글 목록 리턴

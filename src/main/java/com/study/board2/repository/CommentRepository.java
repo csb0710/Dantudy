@@ -14,4 +14,5 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     List<Comment> findAllByBoardOrderByIdDesc(Board board);
 
     List<Comment> findByCommentWriterContaining(String username, Pageable pageable);
+
 }

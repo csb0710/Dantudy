@@ -1,20 +1,17 @@
 package com.study.board2.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.study.board2.dto.BoardDTO;
-import com.study.board2.entity.Study.CodingStudy;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
-import java.io.File;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +35,7 @@ public class Board {
 
     private int fileAttached;
 
-    private Integer languages;
+    //private Integer languages;
 
     private Integer period;
 
@@ -48,16 +45,28 @@ public class Board {
 
     private Integer people;
 
+    private String kakaoURL;
+
+    private Integer type;
+
+    private Integer completed;
+
+    @ManyToMany(mappedBy = "cStudies", cascade = CascadeType.PERSIST)
+    @JsonIgnore
+    private List<User> member = new ArrayList<>();
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     @JsonIgnore
     private User user;
 
-    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Comment> comments = new ArrayList<>();
 
     @OneToMany(mappedBy = "board" , cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<BoardFile> boardFiles = new ArrayList<>();
+
+    private LocalDateTime createdAt;
 
     public static Board toSaveEntity(BoardDTO boardDTO) {
         Board boardEntity = new Board();
@@ -65,11 +74,14 @@ public class Board {
         boardEntity.setContent(boardDTO.getContent());
         boardEntity.setHits(0);
         boardEntity.setFileAttached(0); // 파일 없음.
-        boardEntity.setLanguages(boardDTO.getLanguages());
+        //boardEntity.setLanguages(boardDTO.getLanguages());
         boardEntity.setPeriod(boardDTO.getPeriod());
         boardEntity.setTimes(boardDTO.getTimes());
         boardEntity.setTime(boardDTO.getTime());
         boardEntity.setPeople(boardDTO.getPeople());
+        boardEntity.setType(boardDTO.getType());
+        boardEntity.setCreatedAt(boardDTO.getCreateAt());
+        boardEntity.setCompleted(boardDTO.getCompleted());
 
         return boardEntity;
     }
@@ -80,11 +92,14 @@ public class Board {
         boardEntity.setTitle(boardDTO.getTitle());
         boardEntity.setContent(boardDTO.getContent());
         boardEntity.setHits(boardDTO.getHits());
-        boardEntity.setLanguages(boardDTO.getLanguages());
+        //boardEntity.setLanguages(boardDTO.getLanguages());
         boardEntity.setPeriod(boardDTO.getPeriod());
         boardEntity.setTimes(boardDTO.getTimes());
         boardEntity.setTime(boardDTO.getTime());
         boardEntity.setPeople(boardDTO.getPeople());
+        boardEntity.setType(boardDTO.getType());
+        boardEntity.setCreatedAt(boardDTO.getCreateAt());
+        boardEntity.setCompleted(boardDTO.getCompleted());
 
         return boardEntity;
     }
@@ -95,13 +110,17 @@ public class Board {
         boardEntity.setContent(boardDTO.getContent());
         boardEntity.setHits(0);
         boardEntity.setFileAttached(1); // 파일 있음.
-        boardEntity.setLanguages(boardDTO.getLanguages());
+        //boardEntity.setLanguages(boardDTO.getLanguages());
         boardEntity.setPeriod(boardDTO.getPeriod());
         boardEntity.setTimes(boardDTO.getTimes());
         boardEntity.setTime(boardDTO.getTime());
         boardEntity.setPeople(boardDTO.getPeople());
+        boardEntity.setType(boardDTO.getType());
+        boardEntity.setCreatedAt(boardDTO.getCreateAt());
+        boardEntity.setCompleted(boardDTO.getCompleted());
 
         return boardEntity;
     }
+
 
 }

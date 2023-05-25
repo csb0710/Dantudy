@@ -17,8 +17,9 @@ public class CommentDTO {
     private Integer boardId;
     private LocalDateTime commentCreatedTime;
     private Long userId;
+    private String userRating;
 
-    public static CommentDTO toCommentDTO(Comment comment, Integer boardId, Long userId) {
+    public static CommentDTO toCommentDTO(Comment comment, Integer boardId, Long userId, String userRating) {
         CommentDTO commentDTO = new CommentDTO();
         commentDTO.setId(comment.getId());
         commentDTO.setCommentWriter(comment.getCommentWriter());
@@ -28,6 +29,7 @@ public class CommentDTO {
         //commentDTO.setBoardId(new Long(comment.getBoard().getId()));
         commentDTO.setBoardId(boardId);
         commentDTO.setUserId(userId);
+        commentDTO.setUserRating(userRating);
 
         return commentDTO;
 

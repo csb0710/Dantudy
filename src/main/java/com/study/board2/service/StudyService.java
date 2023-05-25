@@ -15,7 +15,6 @@ import java.util.Map;
 @Setter
 @Service
 public class StudyService {
-    private Map<Integer, String> languages;
 
     private Map<Integer, String> period;
 
@@ -27,11 +26,6 @@ public class StudyService {
 
 
     public StudyService() {
-        languages = new HashMap<>();
-        languages.put(1, "자바");
-        languages.put(2, "파이썬");
-        languages.put(3, "JS");
-        languages.put(4, "c언어");
 
         period = new HashMap<>();
         period.put(1, "4주");

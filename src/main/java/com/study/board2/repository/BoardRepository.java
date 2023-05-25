@@ -1,8 +1,6 @@
 package com.study.board2.repository;
 
 import com.study.board2.entity.Board;
-import com.study.board2.entity.Study.CodingStudy;
-import com.study.board2.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -14,5 +12,5 @@ import org.springframework.stereotype.Repository;
 public interface BoardRepository extends JpaRepository<Board, Integer>, JpaSpecificationExecutor<Board> {
 
     Page<Board> findAll(Specification spec, Pageable pageable);
-    Page<Board> findByTitleContaining(String searchKeyword, Pageable pageable);
+    Page<Board> findByTitleContainingAndType(String searchKeyword, Integer type, Pageable pageable);
 }
