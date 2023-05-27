@@ -12,5 +12,4 @@ import org.springframework.stereotype.Repository;
 public interface BoardRepository extends JpaRepository<Board, Integer>, JpaSpecificationExecutor<Board> {
 
     Page<Board> findAll(Specification spec, Pageable pageable);
-    Page<Board> findByTitleContainingAndType(String searchKeyword, Integer type, Pageable pageable);
 }

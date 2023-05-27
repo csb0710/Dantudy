@@ -10,7 +10,6 @@ import com.study.board2.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.yaml.snakeyaml.tokens.CommentToken;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;

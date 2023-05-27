@@ -1,7 +1,6 @@
 package com.study.board2.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.study.board2.entity.Study.CodingStudyForm;
 import lombok.Data;
 
 import javax.persistence.*;

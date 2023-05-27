@@ -2,9 +2,8 @@ package com.study.board2.controller;
 
 import com.study.board2.dto.BoardDTO;
 import com.study.board2.dto.CommentDTO;
-import com.study.board2.dto.FormDTO;
 import com.study.board2.entity.Board;
-import com.study.board2.entity.Study.CodingStudyForm;
+import com.study.board2.entity.Study.StudyForm;
 import com.study.board2.entity.User;
 import com.study.board2.repository.BoardRepository;
 import com.study.board2.repository.CommentRepository;
@@ -51,18 +50,18 @@ public class BoardController {
     private StudyService studyService;
 
     @GetMapping("/board/list")
-    public String boardList(@RequestParam(required = false) Integer type, CodingStudyForm codingStudy, Model model,
+    public String boardList(@RequestParam(required = false) Integer type, StudyForm studyInform, Model model,
                             @PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pagebale,
                             String searchKeyword) {
 
         Page<Board> list = null;
 
-        if(codingStudy != null && (codingStudy.getPeople() != null || codingStudy.getTime() != null || codingStudy.getTimes() != null || codingStudy.getPeriod() != null) || searchKeyword != null) {
+        if(studyInform != null && (studyInform.getPeople() != null || studyInform.getTime() != null || studyInform.getTimes() != null || studyInform.getPeriod() != null) || searchKeyword != null) {
             System.out.println(boardRepository.findAll(BoardSpecification.containTitle(searchKeyword)).size() + "////////////////////////////");
             if(type == null) {
-                type = codingStudy.getType();
+                type = studyInform.getType();
             }
-            list = boardService.coditionFind(codingStudy, type, searchKeyword, pagebale);
+            list = boardService.coditionFind(studyInform, type, searchKeyword, pagebale);
         }
         else {
             list = boardService.boardList(type, pagebale);
@@ -78,9 +77,9 @@ public class BoardController {
             endPage=1;
         }
 
-        CodingStudyForm codingStudy2 = new CodingStudyForm();
+        StudyForm studyModel = new StudyForm();
 
-        model.addAttribute("CodingStudy", codingStudy2);
+        model.addAttribute("studyModel", studyModel);
         model.addAttribute("period", studyService.getPeriod());
         model.addAttribute("times", studyService.getTimes());
         model.addAttribute("time", studyService.getTime());
@@ -127,7 +126,6 @@ public class BoardController {
     @GetMapping("/board/form")
     public String form(Model model, @RequestParam(required = false) Integer id, @RequestParam(required = false) Integer type, Authentication authentication, Principal principal) {
         if(id == null) {
-            CodingStudyForm codingStudy2 = new CodingStudyForm();
             BoardDTO exboard = new BoardDTO();
             exboard.setType(type);
 
@@ -169,35 +167,33 @@ public class BoardController {
         }
     }
 
-    @GetMapping("/board/form2")
-    public String form2(Model model, @RequestParam(required = false) Integer id, Authentication authentication) {
-        if(id == null) {
-            CodingStudyForm codingStudy2 = new CodingStudyForm();
-            BoardDTO exboard = new BoardDTO();
-            FormDTO formDTO = new FormDTO();
-
-            model.addAttribute("formDTO", formDTO);
-            model.addAttribute("period", studyService.getPeriod());
-            model.addAttribute("times", studyService.getTimes());
-            model.addAttribute("time", studyService.getTime());
-            model.addAttribute("people", studyService.getPeople());
-
-            return "board/formtest";
-        }
-        else {
-
-            String username = authentication.getName();
-            Long userId = userRepository.findByUsername(username).getId();
-            List<CommentDTO> commentDTOList = commentService.findAll(id, userId);
-            boardService.checkHits(id);
-            BoardDTO newBoardDTO = BoardDTO.toBoardDTO(boardService.boardView(id));
-            model.addAttribute("commentUsername", username);
-            model.addAttribute("commentList", commentDTOList);
-            model.addAttribute("board", newBoardDTO);
-
-            return "board/formtest";
-        }
-    }
+//    @GetMapping("/board/form2")
+//    public String form2(Model model, @RequestParam(required = false) Integer id, Authentication authentication) {
+//        if(id == null) {
+//            FormDTO formDTO = new FormDTO();
+//
+//            model.addAttribute("formDTO", formDTO);
+//            model.addAttribute("period", studyService.getPeriod());
+//            model.addAttribute("times", studyService.getTimes());
+//            model.addAttribute("time", studyService.getTime());
+//            model.addAttribute("people", studyService.getPeople());
+//
+//            return "board/formtest";
+//        }
+//        else {
+//
+//            String username = authentication.getName();
+//            Long userId = userRepository.findByUsername(username).getId();
+//            List<CommentDTO> commentDTOList = commentService.findAll(id, userId);
+//            boardService.checkHits(id);
+//            BoardDTO newBoardDTO = BoardDTO.toBoardDTO(boardService.boardView(id));
+//            model.addAttribute("commentUsername", username);
+//            model.addAttribute("commentList", commentDTOList);
+//            model.addAttribute("board", newBoardDTO);
+//
+//            return "board/formtest";
+//        }
+//    }
 
     @PostMapping("/board/form")
     public String postForm(@Valid BoardDTO boardDTO, @NotNull BindingResult bindingResult, Authentication authentication) throws IOException {
@@ -214,16 +210,16 @@ public class BoardController {
         return "redirect:/board/list?type=" + boardDTO.getType();
     }
 
-    @PostMapping("/board/form2")
-    public String postForm2(@Valid FormDTO formDTO, @NotNull BindingResult bindingResult, Authentication authentication) throws IOException {
-        if (bindingResult.hasErrors()) {
-            return "board/form2";
-        }
-
-        String username = authentication.getName();
-        boardService.write2(formDTO.getBoardDTO(), username);
-        return "redirect:/board/list?type=" + formDTO.getBoardDTO().getType();
-    }
+//    @PostMapping("/board/form2")
+//    public String postForm2(@Valid FormDTO formDTO, @NotNull BindingResult bindingResult, Authentication authentication) throws IOException {
+//        if (bindingResult.hasErrors()) {
+//            return "board/form2";
+//        }
+//
+//        String username = authentication.getName();
+//        boardService.write2(formDTO.getBoardDTO(), username);
+//        return "redirect:/board/list?type=" + formDTO.getBoardDTO().getType();
+//    }
 
     @GetMapping("/board/modify")
     public String modifyForm(@RequestParam(required = false) Integer id, Model model) {
@@ -251,14 +247,11 @@ public class BoardController {
     }
     @PostMapping("/board/updateUrl")
     public String updateUrl(@RequestParam("boardId") Integer boardId, @RequestParam("url") String url) {
-        // 서버 로직 작성
-        // ...
-
         Board board = boardRepository.findById(boardId).get();
         board.setKakaoURL(url);
         boardRepository.save(board);
 
-        return "redirect:/board/list"; // 원래 페이지로의 리다이렉션을 수행합니다.
+        return "redirect:/board/list";
     }
     @PostMapping("/board/acceptStudy")
     public String acceptComment(@RequestParam("boardId") Integer boardId, @RequestParam("commentId") Integer commentId) {
@@ -266,7 +259,7 @@ public class BoardController {
         User user = commentRepository.findById(Long.valueOf(commentId)).get().getUser();
 
         if (board == null || user == null) {
-            return "error"; // 에러 페이지 HTML을 반환하거나, 다른 처리를 수행할 수 있습니다.
+            return "error";
         }
 
         if (!board.getMember().contains(user)) {
@@ -276,8 +269,7 @@ public class BoardController {
             userRepository.save(user);
             boardService.write(board);
         }
-        System.out.println(board.getMember().get(0).getUsername()+"/////////////////////////////////////////////////////");
-        System.out.println(user.getCStudies().size() + "//////////////////$$$$$$$$$$$$$$$$$$$$$$$");
+
         return "redirect:/board/list"; // 원래 페이지로의 리다이렉션을 수행합니다.
     }
 
@@ -350,26 +342,11 @@ public class BoardController {
             boardService.deleteView(id);
 
             return "redirect:/board/list?type=" + board.getType();
-            //return "redirect:/admin/user/board?searchKeyword=" + username;
         } else {
 
             return "redirect:/main";
         }
     }
-
-    @GetMapping("/board/test")
-    public String testmethod(Model model) {
-        CodingStudyForm codingStudy = new CodingStudyForm();
-
-        model.addAttribute("CodingStudy", codingStudy);
-        model.addAttribute("period", studyService.getPeriod());
-        model.addAttribute("times", studyService.getTimes());
-        model.addAttribute("time", studyService.getTime());
-        model.addAttribute("people", studyService.getPeople());
-
-        return "board/test";
-    }
-
 
     @GetMapping("/accessDenied")
     public String accessDenied() {

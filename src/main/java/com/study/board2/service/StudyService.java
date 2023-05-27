@@ -26,7 +26,6 @@ public class StudyService {
 
 
     public StudyService() {
-
         period = new HashMap<>();
         period.put(1, "4주");
         period.put(2, "12주");
@@ -49,16 +48,4 @@ public class StudyService {
         }
 
     }
-
-//    public static Board getBoard(Board board, BoardDTO boardDTO) {
-//        StudyService studyService = new StudyService();
-//
-//        board.setLanguages(studyService.getLanguages().get(boardDTO.getLanguages()));
-//        board.setPeriod(studyService.getPeriod().get(boardDTO.getPeriod()));
-//        board.setTimes(studyService.getTimes().get(boardDTO.getTimes()));
-//        board.setTime(studyService.getTime().get(boardDTO.getTime()));
-//        board.setPeople(studyService.getPeople().get(boardDTO.getPeople()));
-//
-//        return board;
-//    }
 }

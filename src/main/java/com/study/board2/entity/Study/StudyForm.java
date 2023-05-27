@@ -1,19 +1,15 @@
 package com.study.board2.entity.Study;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.study.board2.entity.User;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Data
 @Getter
 @Setter
-public class CodingStudyForm {
+public class StudyForm {
 
     private List<Integer> period;
 

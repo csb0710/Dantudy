@@ -65,30 +65,50 @@
 </header>
 <main class="mt-5 pt-5">
     <div class="container-fluid px-4">
-        <h1 th:text="${type == 1 ? '자격증' : type == 2 ? '프로그래밍' : type == 3 ? '독서' : '스포츠'}"></h1>
+        <a th:href = "@{/board/list(type=${type})}"><h1 th:text="${type == 1 ? '자격증' : type == 2 ? '프로그래밍' : type == 3 ? '독서' : '스포츠'}"></h1></a>
         <div>
-            <form class="form-inline d-flex justify-content-end" th:action="@{/board/list(type=${type})}" th:object="${CodingStudy}" method="get">
+            <form class="form-inline d-flex justify-content-end" th:action="@{/board/list(type=${type})}" th:object="${studyModel}" method="get">
                 <input type="hidden" name="type" th:value="${type}">
-                <div>
+                <div style="margin-bottom : 10px;">
                     <div style="float: left; margin-right: 10px; margin-left: 10px">|</div>
-                    <div th:each="peri : ${period}" style="float: left; margin-right: 5px; margin-left: 5px">
-                        <input type="checkbox" th:field="*{period}" th:value="${peri.key}">
-                        <label th:for="${#ids.prev('period')}" th:text="${peri.value}"></label>
+                    <div style="float: left; margin-right: 5px; margin-left: 3px">
+                        <label style="display: inline-block; margin-right: 5px">기간 :</label>
+                        <div style="display: inline-block;">
+                            <div th:each="peri : ${period}" style="display: inline-block; margin-right: 5px;">
+                                <input type="checkbox" th:field="*{period}" th:value="${peri.key}" style="display: inline-block;">
+                                <label th:for="${#ids.prev('period')}" th:text="${peri.value}" style="display: inline-block;"></label>
+                            </div>
+                        </div>
                     </div>
                     <div style="float: left; margin-right: 10px; margin-left: 10px">|</div>
-                    <div th:each="time : ${times}" style="float: left; margin-right: 5px; margin-left: 5px">
-                        <input type="checkbox" th:field="*{times}" th:value="${time.key}">
-                        <label th:for="${#ids.prev('times')}" th:text="${time.value}"></label>
+                    <div style="float: left; margin-right: 5px; margin-left: 3px">
+                        <label style="display: inline-block; margin-right: 5px">횟수 :</label>
+                        <div style="display: inline-block;">
+                            <div th:each="time : ${times}" style="display: inline-block; margin-right: 5px;">
+                                <input type="checkbox" th:field="*{times}" th:value="${time.key}" style="display: inline-block;">
+                                <label th:for="${#ids.prev('times')}" th:text="${time.value}" style="display: inline-block;"></label>
+                            </div>
+                        </div>
                     </div>
                     <div style="float: left; margin-right: 10px; margin-left: 10px">|</div>
-                    <div th:each="ti : ${time}" style="float: left; margin-right: 5px; margin-left: 5px">
-                        <input type="checkbox" th:field="*{time}" th:value="${ti.key}">
-                        <label th:for="${#ids.prev('time')}" th:text="${ti.value}"></label>
+                    <div style="float: left; margin-right: 5px; margin-left: 3px">
+                        <label style="display: inline-block; margin-right: 5px">시간대 :</label>
+                        <div style="display: inline-block;">
+                            <div th:each="ti : ${time}" style="display: inline-block; margin-right: 5px;">
+                                <input type="checkbox" th:field="*{time}" th:value="${ti.key}" style="display: inline-block;">
+                                <label th:for="${#ids.prev('time')}" th:text="${ti.value}" style="display: inline-block;"></label>
+                            </div>
+                        </div>
                     </div>
                     <div style="float: left; margin-right: 10px; margin-left: 10px">|</div>
-                    <div th:each="people : ${people}" style="float: left; margin-right: 5px; margin-left: 5px">
-                        <input type="checkbox" th:field="*{people}" th:value="${people.key}">
-                        <label th:for="${#ids.prev('people')}" th:text="${people.value}"></label>
+                    <div style="float: left; margin-right: 5px; margin-left: 3px">
+                        <label style="display: inline-block; margin-right: 5px">인원 :</label>
+                        <div style="display: inline-block;">
+                            <div th:each="people : ${people}" style="display: inline-block; margin-right: 5px;">
+                                <input type="checkbox" th:field="*{people}" th:value="${people.key}" style="display: inline-block;">
+                                <label th:for="${#ids.prev('people')}" th:text="${people.value}" style="display: inline-block;"></label>
+                            </div>
+                        </div>
                     </div>
                     <div style="float: left; margin-right: 10px; margin-left: 10px">|</div>
                 </div>
@@ -98,6 +118,8 @@
                 </div>
             </form>
         </div>
+
+
         <div class="card mb-4">
             <div class="card-header">
                 <a type="button" class="btn btn-primary float-end" th:href="@{/board/form(type=${type})}">
