@@ -203,7 +203,7 @@ public class BoardController {
 
         String username = authentication.getName();
         User user = userRepository.findByUsername(username);
-        user.setCounting(user.getCounting()+1);
+//        user.setCounting(user.getCounting()+1);
         boardDTO.checkNull();
         boardDTO.setCompleted(0);
         boardService.write2(boardDTO, username);
@@ -265,7 +265,6 @@ public class BoardController {
         if (!board.getMember().contains(user)) {
             board.getMember().add(user);
             user.getCStudies().add(board);
-            user.setCounting(user.getCounting()+1);
             userRepository.save(user);
             boardService.write(board);
         }
@@ -281,6 +280,7 @@ public class BoardController {
 
         user.setScore2(people);
         user.setScore(tempScore/people);
+        user.checkRating();
 
         userRepository.save(user);
 
@@ -302,6 +302,8 @@ public class BoardController {
     public String completeList(@RequestParam("studyId") Integer studyId, Model model, Principal principal) {
         List<User> list = boardRepository.findById(studyId).get().getMember();
         Board board = boardRepository.findById(studyId).get();
+        board.setCompleted(1);
+        boardRepository.save(board);
         String currentUsername = principal.getName();
         User currentUser = userRepository.findByUsername(currentUsername);
 
@@ -326,12 +328,12 @@ public class BoardController {
             User master = board.getUser();
 
             for(User user : users) {
-                user.setCounting(user.getCounting()-1);
+                user.setCounting(user.getCounting()+1);
                 user.getCStudies().remove(board);
                 userRepository.save(user);
             }
 
-            master.setCounting(master.getCounting()-1);
+            master.setCounting(master.getCounting()+1);
             userRepository.save(master);
 
 
@@ -355,13 +357,17 @@ public class BoardController {
 
 
     @GetMapping("/users/inform")
-    public String userInform(@RequestParam(required = false) Integer id, @RequestParam(required = false) Integer commentId, @RequestParam(required = false) String username,  Model model, Principal principal) {
+    public String userInform(@RequestParam(required = false) Integer id, @RequestParam(required = false) Integer commentId, @RequestParam(required = false) String username,  Model model, Principal principal, Authentication authentication) {
         Long id2;
         if(id == null && commentId != null) {
              id2 = commentRepository.findById(Long.valueOf(commentId)).get().getUser().getId();
         }
         else if(username != null) {
             id2 = userRepository.findByUsername(username).getId();
+        }
+        else if(id == null && commentId==null && username == null) {
+            String tempUserName = authentication.getName();
+            id2 = userRepository.findByUsername(tempUserName).getId();
         }
         else {
             id2 = Long.valueOf(id);

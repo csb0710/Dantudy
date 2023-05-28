@@ -47,7 +47,7 @@ public class CommentService {
 
         List<CommentDTO> commentDTOList = new ArrayList<>();
         for (Comment comment : commentList) {
-            CommentDTO commentDTO = CommentDTO.toCommentDTO(comment, boardId, userId, comment.getUserRating());
+            CommentDTO commentDTO = CommentDTO.toCommentDTO(comment, boardId, comment.getUser().getId(), comment.getUserRating());
             commentDTOList.add(commentDTO);
         }
 

@@ -25,8 +25,6 @@ public class CommentDTO {
         commentDTO.setCommentWriter(comment.getCommentWriter());
         commentDTO.setCommentContents(comment.getCommentContents());
         commentDTO.setCommentCreatedTime(comment.getCreatedTime());
-        //사용하고 싶으면 service 메서드에 @Transactional 필수
-        //commentDTO.setBoardId(new Long(comment.getBoard().getId()));
         commentDTO.setBoardId(boardId);
         commentDTO.setUserId(userId);
         commentDTO.setUserRating(userRating);

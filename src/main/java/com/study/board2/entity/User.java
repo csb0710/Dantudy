@@ -51,10 +51,6 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "board_id"))
     private List<Board> cStudies;
 
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-//    //@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-//    private List<Board> studies = new ArrayList<>();
-
     @JsonIgnore
     @ManyToMany
     @JoinTable(name = "user_role",

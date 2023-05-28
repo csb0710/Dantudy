@@ -63,8 +63,7 @@
                       method="post">
                     <div style="margin-right: 5px" class="text-white">아이디 :</div>
                     <span style="margin-right: 15px" class="text-white" sec:authentication="name">사용자</span>
-                    <div style="margin-right: 5px" class="text-white">권한 :</div>
-                    <span class="text-white mx-2" sec:authentication="principal.authorities">권한</span>
+                    <div style="float: left; margin-right: 15px" class="text-white"><a th:href="@{/users/inform}">내 정보보기</a></div>
                     <button class="btn btn-secondary my-2 my-sm-0" type="submit">Logout</button>
                 </form>
 

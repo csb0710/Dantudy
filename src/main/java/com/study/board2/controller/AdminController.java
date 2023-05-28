@@ -104,6 +104,7 @@ public class AdminController {
         int startPage = Math.max(1, nowPage - 4);
         int endPage = Math.max(Math.min(list.getTotalPages(), nowPage + 5), 1);
 
+
         model.addAttribute("list", list);
         model.addAttribute("nowPage", nowPage);
         model.addAttribute("startPage", startPage);
@@ -131,7 +132,7 @@ public class AdminController {
 
         int nowPage = list.getPageable().getPageNumber() + 1;
         int startPage = Math.max(1, nowPage - 4);
-        int endPage = Math.min(list.getTotalPages(), nowPage + 5);
+        int endPage = Math.max(Math.min(list.getTotalPages(), nowPage + 5), 1);
 
         model.addAttribute("list", list);
         model.addAttribute("nowPage", nowPage);

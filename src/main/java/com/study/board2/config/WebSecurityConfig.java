@@ -48,6 +48,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
                 )
                 .formLogin((form) -> form
                         .loginPage("/account/login")
+                        .defaultSuccessUrl("/")
                         .permitAll()
                 )
                 .logout((logout) -> logout.permitAll())
@@ -79,8 +80,4 @@ public class WebSecurityConfig implements WebMvcConfigurer {
         return new BCryptPasswordEncoder();
     }
 
-//    @Bean
-//    public WebServerFactoryCustomizer<ConfigurableWebServerFactory> webServerCustomizer() {
-//        return container -> container.addErrorPages(new ErrorPage(HttpStatus.NOT_FOUND, "/"));
-//    }
 }

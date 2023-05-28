@@ -50,8 +50,7 @@
                       method="post">
                     <div style="margin-right: 5px" class="text-white">아이디 :</div>
                     <span style="margin-right: 15px" class="text-white" sec:authentication="name">사용자</span>
-                    <div style="margin-right: 5px" class="text-white">권한 :</div>
-                    <span class="text-white mx-2" sec:authentication="principal.authorities">권한</span>
+                    <div style="float: left; margin-right: 15px" class="text-white"><a th:href="@{/users/inform}">내 정보보기</a></div>
                     <button class="btn btn-secondary my-2 my-sm-0" type="submit">Logout</button>
                 </form>
 
@@ -83,7 +82,7 @@
             <div class="form-group">
                 <label for="title">사람 수 : </label>
                 <input type="text" th:classappend="${#fields.hasErrors('people')} ? 'is-invalid'"
-                     id="people" th:value="${people}" style="border:0 solid black" readonly>
+                       id="people" th:value="${people}" style="border:0 solid black" readonly>
             </div>
             <div class="form-group" style="margin-top: 50px">
                 <label for="title">제목 : </label>
@@ -102,9 +101,6 @@
                     내용 에러 메시지
                 </div>
             </div>
-            <div th:if="*{fileAttached == 1}">
-                <img th:src="@{|/upload/*{storedFileName}|}" alt="">
-            </div>
             <div style="margin-bottom: 30px">
                 <label>조회수 : </label>
                 <input type="text" id="hits" th:field="*{hits}" style="border:0 solid black" readonly>
@@ -116,12 +112,13 @@
             <div style="margin-bottom: 30px">
                 <label>작성자 : </label>
                 <input type="text" id="maker" th:field="*{user.nickname}" style="border:0 solid black" readonly>
-                <a th:href = "@{/users/inform(id=*{user.id})}">정보 보기</a>
+                <a th:href="@{/users/inform(id=*{user.id})}">정보 보기</a>
             </div>
 
             <div>
-                <a type="button" class="btn btn-primary" th:href="@{/board/modify(id=${board.id}, type=${board.type})}">수정</a>
-                <a type="button" class="btn btn-primary" th:href="@{/board/delete(id=${board.id})}">삭제</a>
+                <a type="button" class="btn btn-primary" th:if="${board.user.id == currentUserId}"
+                   th:href="@{/board/modify(id=${board.id}, type=${board.type})}">수정</a>
+                <a type="button" class="btn btn-primary" th:if="${board.user.id == currentUserId}" th:href=" @{/board/delete(id=${board.id})}">삭제</a>
             </div>
         </form>
     </div>
@@ -134,8 +131,8 @@
                     <th>내용</th>
                     <th>작성시간</th>
                     <th>등급</th>
-                    <th>  </th>
-                    <th>  </th>
+                    <th></th>
+                    <th></th>
                     <th></th>
                 </tr>
                 <tr th:each="comment: ${commentList}">
@@ -144,20 +141,22 @@
                     <td th:text="${comment.commentCreatedTime}"></td>
                     <td th:text="${comment.userRating}"></td>
                     <td>
-                        <a th:href = "@{/users/inform(commentId=${comment.id})}">정보 보기</a>
+                        <a th:href="@{/users/inform(commentId=${comment.id})}">정보 보기</a>
                     </td>
                     <td id="test1">
-                        <form th:action="@{/board/acceptStudy}" method="post" th:if="${board.user.id == currentUserId}">
-                            <input type="hidden" name="boardId" th:value="${board.id}" />
-                            <input type="hidden" name="commentId" th:value="${comment.id}" />
+                        <form th:action="@{/board/acceptStudy}" method="post" th:if="${board.user.id == currentUserId and comment.userId != currentUserId}">
+                            <input type="hidden" name="boardId" th:value="${board.id}"/>
+                            <input type="hidden" name="commentId" th:value="${comment.id}"/>
+
                             <button type="submit" class="btn btn-primary">수락</button>
                         </form>
-
                     </td>
                     <td>
+                        <div th:if="${comment.userId == currentUserId or board.user.id == currentUserId}">
                         <form th:action="@{/comment/delete/{id}(id=${comment.id})}" method="get">
                             <button type="summit" class="btn btn-primary">삭제</button>
                         </form>
+                        </div>
                     </td>
 
                 </tr>
@@ -185,7 +184,7 @@
                 "commentWriter": writer,
                 "commentContents": contents,
                 "boardId": id,
-                "userRating" : userRating
+                "userRating": userRating
             },
             success: function (res) {
                 console.log("요청성공", res);
@@ -224,7 +223,7 @@
                 console.log("요청실패", err);
             }
         });
-        $('#comment-list').load(window.location.href+' #comment-list');
+        $('#comment-list').load(window.location.href + ' #comment-list');
 
         location.reload();
 

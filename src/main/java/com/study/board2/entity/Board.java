@@ -33,10 +33,6 @@ public class Board {
 
     private Integer hits = 0;
 
-    private int fileAttached;
-
-    //private Integer languages;
-
     private Integer period;
 
     private Integer times;
@@ -63,9 +59,6 @@ public class Board {
     @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Comment> comments = new ArrayList<>();
 
-    @OneToMany(mappedBy = "board" , cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<BoardFile> boardFiles = new ArrayList<>();
-
     private LocalDateTime createdAt;
 
     public static Board toSaveEntity(BoardDTO boardDTO) {
@@ -73,8 +66,6 @@ public class Board {
         boardEntity.setTitle(boardDTO.getTitle());
         boardEntity.setContent(boardDTO.getContent());
         boardEntity.setHits(0);
-        boardEntity.setFileAttached(0); // 파일 없음.
-        //boardEntity.setLanguages(boardDTO.getLanguages());
         boardEntity.setPeriod(boardDTO.getPeriod());
         boardEntity.setTimes(boardDTO.getTimes());
         boardEntity.setTime(boardDTO.getTime());
@@ -92,7 +83,6 @@ public class Board {
         boardEntity.setTitle(boardDTO.getTitle());
         boardEntity.setContent(boardDTO.getContent());
         boardEntity.setHits(boardDTO.getHits());
-        //boardEntity.setLanguages(boardDTO.getLanguages());
         boardEntity.setPeriod(boardDTO.getPeriod());
         boardEntity.setTimes(boardDTO.getTimes());
         boardEntity.setTime(boardDTO.getTime());
@@ -109,8 +99,6 @@ public class Board {
         boardEntity.setTitle(boardDTO.getTitle());
         boardEntity.setContent(boardDTO.getContent());
         boardEntity.setHits(0);
-        boardEntity.setFileAttached(1); // 파일 있음.
-        //boardEntity.setLanguages(boardDTO.getLanguages());
         boardEntity.setPeriod(boardDTO.getPeriod());
         boardEntity.setTimes(boardDTO.getTimes());
         boardEntity.setTime(boardDTO.getTime());
