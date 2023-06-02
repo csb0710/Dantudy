@@ -88,9 +88,9 @@
     <form th:action="@{/board/updateUrl}" method="post" th:if="${currentUserId == board.user.id}">
       <input type="hidden" name="boardId" th:value="${board.id}" />
       <input type="text" name="url" th:value="${board.kakaoURL}" />
-      <button type="submit">URL 업데이트</button>
+      <button class="btn btn-dark" type="submit">URL 업데이트</button>
     </form>
-    <a th:if="${currentUserId == board.user.id}" class="btn btn-primary" th:href="@{/board/completeInform(studyId=${board.id})}">스터디 완료하기</a>
+    <a th:if="${currentUserId == board.user.id}" class="btn btn-dark" th:href="@{/board/completeInform(studyId=${board.id})}">스터디 완료하기</a>
     <div th:unless="${currentUserId == board.user.id}">
       <p th:text="${board.kakaoURL}"></p>
     </div>
@@ -127,15 +127,15 @@
                   </thead>
                   <tbody class="table table-striped">
                   <tr>
-                    <td th:text="${master.id}">1</td>
-                    <td th:text="${master.username} + ' (스터디장)'"></td>
+                    <td th:text="${master.username}">1</td>
+                    <td th:text="${master.nickname} + ' (스터디장)'"></td>
                     <td>
                       <a th:href = "@{/users/inform(id=${master.id})}">정보 보기</a>
                     </td>
                   </tr>
                   <tr th:each="member : ${list}">
-                    <td th:text="${member.id}">1</td>
-                    <td th:text="${member.username}"></td>
+                    <td th:text="${member.username}">1</td>
+                    <td th:text="${member.nickname}"></td>
                     <td>
                       <a th:href = "@{/users/inform(id=${member.id})}">정보 보기</a>
                     </td>

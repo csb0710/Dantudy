@@ -60,38 +60,27 @@
 </header>
 <main class="mt-5 pt-5">
     <div class="container-fluid px-4">
-        <h2 style="margin-bottom: 50px">게시글</h2>
-
         <form action="#" th:action="@{/board/form}" th:object="${board}" method="post">
-            <input type="hidden" th:field="*{id}">
             <div class="form-group">
-                <label for="title">기간 : </label>
-                <input type="text" th:classappend="${#fields.hasErrors('period')} ? 'is-invalid'"
-                       id="period" th:value="${period}" style="border:0 solid black" readonly>
-            </div>
-            <div class="form-group">
-                <label for="title">주차별 횟수 : </label>
-                <input type="text" th:classappend="${#fields.hasErrors('times')} ? 'is-invalid'"
-                       id="times" th:value="${times}" style="border:0 solid black" readonly>
-            </div>
-            <div class="form-group">
-                <label for="title">시간 때 : </label>
-                <input type="text" th:classappend="${#fields.hasErrors('time')} ? 'is-invalid'"
-                       id="time" th:value="${time}" style="border:0 solid black" readonly>
-            </div>
-            <div class="form-group">
-                <label for="title">사람 수 : </label>
-                <input type="text" th:classappend="${#fields.hasErrors('people')} ? 'is-invalid'"
-                       id="people" th:value="${people}" style="border:0 solid black" readonly>
-            </div>
-            <div class="form-group" style="margin-top: 50px">
-                <label for="title">제목 : </label>
+                <label style="font-size: 36px;" for="title">제목 : </label>
                 <input type="text" th:classappend="${#fields.hasErrors('title')} ? 'is-invalid'"
-                       id="title" th:field="*{title}" style="border:0 solid black" readonly>
+                       id="title" th:field="*{title}" style="border:0 solid black; font-size: 36px;" readonly>
                 <div class="invalid-feedback" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">
                     제목 에러 메시지
                 </div>
             </div>
+            <hr style="border: none; border-top: 2px solid #ccc; margin: 20px 0; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);">
+
+            <div style="margin-bottom: 30px">
+                <label style="display: inline-block; margin-right: 10px">조회수:</label>
+                <label id="hits" th:text="*{hits}" style="display: inline-block; border: 0 solid black; margin-right: 50px" readonly/>
+                <label style="display: inline-block; margin-right: 10px">작성시간:</label>
+                <label id="createAt" th:text="*{createAt}" style="display: inline-block; border: 0 solid black; margin-right: 50px" readonly/>
+                <label style="display: inline-block; margin-right: 10px">작성자:</label>
+                <label id="maker" th:text="*{user.nickname}" style="display: inline-block; border: 0 solid black; margin-right: 5px;" readonly></label>
+                <a th:href="@{/users/inform(id=*{user.id})}" style="display: inline-block; margin-left: 20px">정보 보기</a>
+            </div>
+            <input type="hidden" th:field="*{id}">
             <div class="form-group">
                 <label for="content">내용</label>
                 <textarea class="form-control" th:classappend="${#fields.hasErrors('content')} ? 'is-invalid'"
@@ -101,29 +90,39 @@
                     내용 에러 메시지
                 </div>
             </div>
-            <div style="margin-bottom: 30px">
-                <label>조회수 : </label>
-                <input type="text" id="hits" th:field="*{hits}" style="border:0 solid black" readonly>
-            </div>
-            <div style="margin-bottom: 30px">
-                <label>작성시간 : </label>
-                <input type="text" id="createAt" th:field="*{createAt}" style="border:0 solid black" readonly>
-            </div>
-            <div style="margin-bottom: 30px">
-                <label>작성자 : </label>
-                <input type="text" id="maker" th:field="*{user.nickname}" style="border:0 solid black" readonly>
-                <a th:href="@{/users/inform(id=*{user.id})}">정보 보기</a>
-            </div>
 
+            <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 20px; display: inline-block;">
+                <div class="form-group">
+                    <label for="title">기간 : </label>
+                    <input type="text" th:classappend="${#fields.hasErrors('period')} ? 'is-invalid'"
+                           id="period" th:value="${period}" style="border:0 solid black" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="title">주차별 횟수 : </label>
+                    <input type="text" th:classappend="${#fields.hasErrors('times')} ? 'is-invalid'"
+                           id="times" th:value="${times}" style="border:0 solid black" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="title">시간 때 : </label>
+                    <input type="text" th:classappend="${#fields.hasErrors('time')} ? 'is-invalid'"
+                           id="time" th:value="${time}" style="border:0 solid black" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="title">사람 수 : </label>
+                    <input type="text" th:classappend="${#fields.hasErrors('people')} ? 'is-invalid'"
+                           id="people" th:value="${people}" style="border:0 solid black" readonly>
+                </div>
+            </div>
             <div>
-                <a type="button" class="btn btn-primary" th:if="${board.user.id == currentUserId}"
+                <a type="button" class="btn btn-dark" th:if="${board.user.id == currentUserId}"
                    th:href="@{/board/modify(id=${board.id}, type=${board.type})}">수정</a>
-                <a type="button" class="btn btn-primary" th:if="${board.user.id == currentUserId}" th:href=" @{/board/delete(id=${board.id})}">삭제</a>
+                <a type="button" class="btn btn-dark" th:if="${board.user.id == currentUserId}" th:href=" @{/board/delete(id=${board.id})}">삭제</a>
             </div>
         </form>
     </div>
-    <div class="card-body" style="padding-top: 50px">
-        <h3>댓 글</h3>
+    <hr style="border: none; border-top: 2px solid #ccc; margin: 20px 0; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);">
+    <div class="card-body" style="padding-top: 20px">
+        <h3>신청 목록</h3>
         <div id="comment-list">
             <table class="table table-hover table-striped">
                 <tr>
@@ -148,13 +147,13 @@
                             <input type="hidden" name="boardId" th:value="${board.id}"/>
                             <input type="hidden" name="commentId" th:value="${comment.id}"/>
 
-                            <button type="submit" class="btn btn-primary">수락</button>
+                            <button type="submit" class="btn btn-dark">수락</button>
                         </form>
                     </td>
                     <td>
                         <div th:if="${comment.userId == currentUserId or board.user.id == currentUserId}">
                         <form th:action="@{/comment/delete/{id}(id=${comment.id})}" method="get">
-                            <button type="summit" class="btn btn-primary">삭제</button>
+                            <button type="summit" class="btn btn-dark">삭제</button>
                         </form>
                         </div>
                     </td>
@@ -164,7 +163,7 @@
         </div>
         <div id="comment-write">
             <input type="text" id="commentContents" placeholder="내용">
-            <button id="comment-write-btn" onclick="commentWrite()">댓글작성</button>
+            <button id="comment-write-btn" class="btn btn-dark" onclick="commentWrite()">댓글작성</button>
         </div>
     </div>
 </main>
@@ -209,7 +208,7 @@
                     output += "</td>";
                     output += "<td id=\"test1\">";
                     output += "<form th:action=\"@{/comment/delete/{id}(id=${comment.id})}\" method=\"get\">";
-                    output += "<button type=\"summit\" class=\"btn btn-primary\">삭제</button>";
+                    output += "<button type=\"summit\" class=\"btn btn-dark\">삭제</button>";
                     output += "</form>";
                     output += "</td>";
                     output += "</tr>";

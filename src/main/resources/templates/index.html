@@ -56,9 +56,6 @@
 </html>
 
 
-
-
-
 </head>
 
 <body>
@@ -86,31 +83,35 @@
                 <form class="form-inline my-2 my-lg-0" sec:authorize="isAuthenticated()" th:action="@{/logout}"
                       method="post">
                     <div style="float: left; margin-right: 5px" class="text-white">아이디 :</div>
-                    <span style="float: left; margin-right: 15px" class="text-white" sec:authentication="name">사용자</span>
-                    <div style="float: left; margin-right: 15px" class="text-white"><a th:href="@{/users/inform}">내 정보보기</a></div>
+                    <span style="float: left; margin-right: 15px" class="text-white"
+                          sec:authentication="name">사용자</span>
+                    <div style="float: left; margin-right: 15px" class="text-white"><a th:href="@{/users/inform}">내
+                        정보보기</a></div>
                     <button class="btn btn-secondary my-2 my-sm-0" type="submit">Logout</button>
                 </form>
             </div>
         </div>
     </div>
 </header>
-<div class="grid">
-    <div class="tile">
-        <a th:href="@{/board/list(type=1)}"><img src="/css/img_1.png" alt="자격증"></a>
-        <h3>자격증</h3>
+<main>
+    <div class="grid">
+        <div class="tile">
+            <a th:href="@{/board/list(type=1)}"><img src="/img/img_1.png" alt="자격증"></a>
+            <h3>자격증</h3>
+        </div>
+        <div class="tile">
+            <a th:href="@{/board/list(type=2)}"><img src="/img/img_2.png" alt="프로그래밍"></a>
+            <h3>프로그래밍</h3>
+        </div>
+        <div class="tile">
+            <a th:href="@{/board/list(type=3)}"><img src="/img/img_3.png" alt="독서"></a>
+            <h3>독서</h3>
+        </div>
+        <div class="tile">
+            <a th:href="@{/board/list(type=4)}"><img src="/img/img_4.png" alt="스포츠"></a>
+            <h3>스포츠</h3>
+        </div>
     </div>
-    <div class="tile">
-        <a th:href="@{/board/list(type=2)}"><img src="/css/img_2.png" alt="프로그래밍"></a>
-        <h3>프로그래밍</h3>
-    </div>
-    <div class="tile">
-        <a th:href="@{/board/list(type=3)}"><img src="/css/img_3.png" alt="독서"></a>
-        <h3>독서</h3>
-    </div>
-    <div class="tile">
-        <a th:href="@{/board/list(type=4)}"><img src="/css/img_4.png" alt="스포츠"></a>
-        <h3>스포츠</h3>
-    </div>
-</div>
+</main>
 </body>
 </html>

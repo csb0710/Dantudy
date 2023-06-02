@@ -264,7 +264,7 @@ public class BoardController {
 
         if (!board.getMember().contains(user)) {
             board.getMember().add(user);
-            user.getCStudies().add(board);
+            user.getStudies().add(board);
             userRepository.save(user);
             boardService.write(board);
         }
@@ -292,7 +292,7 @@ public class BoardController {
         User user = userRepository.findById(Long.valueOf(userId)).get();
         Board board = boardRepository.findById(studyId).get();
 
-        user.getCStudies().remove(board);
+        user.getStudies().remove(board);
 
         userRepository.save(user);
 
@@ -329,7 +329,7 @@ public class BoardController {
 
             for(User user : users) {
                 user.setCounting(user.getCounting()+1);
-                user.getCStudies().remove(board);
+                user.getStudies().remove(board);
                 userRepository.save(user);
             }
 
@@ -380,7 +380,7 @@ public class BoardController {
 
         model.addAttribute("currentUserId", currentUser.getId());
         model.addAttribute("list", user.getBoards());
-        model.addAttribute("list2", user.getCStudies());
+        model.addAttribute("list2", user.getStudies());
         model.addAttribute("user", user);
 
         return "user/userPage";

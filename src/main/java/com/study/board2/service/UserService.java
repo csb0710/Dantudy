@@ -43,6 +43,10 @@ public class UserService {
         return userRepository.findAll(pageable);
     }
 
+    public boolean checkExist(String username) {
+        return userRepository.findByUsername(username) != null;
+    }
+
     public Page<User> userSearchList(String searchKeyword, Pageable pageable) {
 
         return userRepository.findByUsernameContaining(searchKeyword, pageable);

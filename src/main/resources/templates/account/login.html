@@ -15,10 +15,11 @@
 </head>
 <body class="text-center">
     <form class="form-signin" th:action="@{/account/login}" method="post">
-        <img class="mb-4" src="https://getbootstrap.com/docs/4.0/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
-        <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+        <a th:href="@{/}" class="nav-link px-2 text-white"><h1 style="background-color: black; color: white; padding: 10px 20px; margin-bottom: 50px">Dantudy</h1></a>
+
+        <h1 class="h3 mb-3 font-weight-normal">LOGIN</h1>
         <div th:if="${param.error}" class="alert alert-danger" role="alert">
-            비번 틀렸어 시발련아.
+            비밀번호가 잘못 되었습니다.
         </div>
         <div th:if="${param.logout}" class="alert alert-primary" role="alert">
             You have been logged out.
@@ -27,14 +28,11 @@
         <input type="text" name="username" id="username" class="form-control" placeholder="Username" required autofocus>
         <label for="inputPassword" class="sr-only">Password</label>
         <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required>
-    <!--    <div class="checkbox mb-3">-->
-    <!--        <label>-->
-    <!--            <input type="checkbox" value="remember-me"> Remember me-->
-    <!--        </label>-->
-    <!--    </div>-->
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-        <a class="btn btn-lg btn-primary btn-block" th:href="@{/account/register}">Sign up</a>
-        <p class="mt-5 mb-3 text-muted"> csb0710 </p>
+
+        <button class="btn btn-dark btn-lg btn-block" type="submit">Sign in</button>
+        <a class="btn btn-dark btn-lg btn-block" th:href="@{/account/register}">Sign up</a>
+        <p class="mt-5 mb-3 text-muted"> @32194501 차승빈 오픈소스 프로젝트 </p>
     </form>
 </body>
+
 </html>

@@ -63,13 +63,17 @@
         </div>
     </div>
 </header>
-<main class="mt-5 pt-5">
+<main class="mt-3 pt-5">
     <div class="container-fluid px-4">
-        <h1 class="mt-4">유저 정보</h1>
+        <h1 style="margin-bottom: 50px" class="mt-4">유저 정보</h1>
             <table>
                 <tr>
-                    <td>이름:</td>
+                    <td>아이디:</td>
                     <td th:text="${user.username}">-</td>
+                </tr>
+                <tr>
+                    <td>이름:</td>
+                    <td th:text="${user.nickname}">-</td>
                 </tr>
                 <tr>
                     <td>성별:</td>
@@ -79,10 +83,7 @@
                     <td>학과:</td>
                     <td th:text="${user.major}">-</td>
                 </tr>
-                <tr>
-                    <td>닉네임:</td>
-                    <td th:text="${user.nickname}">-</td>
-                </tr>
+
                 <tr>
                     <td>등급:</td>
                     <td th:text="${user.rating}">-</td>

@@ -47,7 +47,7 @@ public class Board {
 
     private Integer completed;
 
-    @ManyToMany(mappedBy = "cStudies", cascade = CascadeType.PERSIST)
+    @ManyToMany(mappedBy = "Studies", cascade = CascadeType.PERSIST)
     @JsonIgnore
     private List<User> member = new ArrayList<>();
 

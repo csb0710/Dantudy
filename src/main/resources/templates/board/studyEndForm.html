@@ -114,7 +114,7 @@
                   <input type="radio" th:id="'rating' + ${member.id} + '5'" name="rating" value="5" />
                   <label th:for="'rating' + ${member.id} + '5'">5점</label>
                   <input type="hidden" name="memberId" th:value="${member.id}" />
-                  <button type="submit">저장</button>
+                  <button class="btn btn-dark" type="submit">저장</button>
               </form>
             </td>
           </tr>
@@ -122,8 +122,8 @@
           </tr>
           </tbody>
         </table>
-        <a type="button" class="btn btn-primary" th:href="@{/board/delete(id=${board.id})}" th:if="${board.user.id == currentUserId}">스터디 삭제</a>
-          <a type="button" class="btn btn-primary" th:href="@{/board/completeDelete(studyId=${board.id}, userId=${currentUserId})}" th:if="${board.user.id != currentUserId}">스터디 완료하기</a>
+        <a type="button" class="btn btn-dark" th:href="@{/board/delete(id=${board.id})}" th:if="${board.user.id == currentUserId}">스터디 삭제</a>
+          <a type="button" class="btn btn-dark" th:href="@{/board/completeDelete(studyId=${board.id}, userId=${currentUserId})}" th:if="${board.user.id != currentUserId}">스터디 완료하기</a>
       </div>
     </div>
   </div>

@@ -58,7 +58,8 @@
                       method="post">
                     <div style="margin-right: 5px" class="text-white">아이디 :</div>
                     <span style="margin-right: 15px" class="text-white" sec:authentication="name">사용자</span>
-                    <div style="float: left; margin-right: 15px" class="text-white"><a th:href="@{/users/inform}">내 정보보기</a></div>
+                    <div style="float: left; margin-right: 15px" class="text-white"><a th:href="@{/users/inform}">내
+                        정보보기</a></div>
                     <button class="btn btn-secondary my-2 my-sm-0" type="submit">Logout</button>
                 </form>
 
@@ -67,54 +68,73 @@
     </div>
 </header>
 <main class="mt-5 pt-5">
-    <div class="container-fluid px-4">
-        <h2>게시판</h2>
-        <form id="submitForm" action="#" th:action="@{/board/form}" th:object="${board}" method="post" enctype="multipart/form-data">
+    <div class="container-fluid px-md-4">
+        <h2 style="margin-bottom: 50px">작성</h2>
+        <form id="submitForm" action="#" th:action="@{/board/form}" th:object="${board}" method="post"
+              enctype="multipart/form-data" style="margin-bottom: 10px; display: flex;">
             <input type="hidden" th:field="*{id}">
             <input type="hidden" th:field="*{type}">
             <div>
-                <div style="float: left; margin-right: 10px; margin-left: 10px">|</div>
-                <div th:each="peri : ${period}" style="float: left; margin-right: 5px; margin-left: 5px">
-                    <input type="checkbox" th:field="*{period}" th:value="${peri.key}">
-                    <label th:for="${#ids.prev('period')}" th:text="${peri.value}"></label>
+                <div style="margin-bottom: 50px">
+                    <div style="float: left; margin-right: 5px; margin-left: 3px;">
+                        <label style="display: inline-block; margin-right: 5px; font-weight: bold; background-color: rgba(255, 255, 0, 0.3);">기간 :</label>
+                        <div style="display: inline-block;">
+                            <div th:each="peri : ${period}" style="display: inline-block; margin-right: 5px;">
+                                <input type="checkbox" th:field="*{period}" th:value="${peri.key}" style="display: inline-block;">
+                                <label th:for="${#ids.prev('period')}" th:text="${peri.value}" style="display: inline-block;"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="float: left; margin-right: 5px; margin-left: 3px;">
+                        <label style="display: inline-block; margin-right: 5px; font-weight: bold; background-color: rgba(255, 255, 0, 0.3);">횟수 :</label>
+                        <div style="display: inline-block;">
+                            <div th:each="time : ${times}" style="display: inline-block; margin-right: 5px;">
+                                <input type="checkbox" th:field="*{times}" th:value="${time.key}" style="display: inline-block;">
+                                <label th:for="${#ids.prev('times')}" th:text="${time.value}" style="display: inline-block;"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="float: left; margin-right: 5px; margin-left: 3px;">
+                        <label style="display: inline-block; margin-right: 5px; font-weight: bold; background-color: rgba(255, 255, 0, 0.3);">시간대 :</label>
+                        <div style="display: inline-block;">
+                            <div th:each="ti : ${time}" style="display: inline-block; margin-right: 5px;">
+                                <input type="checkbox" th:field="*{time}" th:value="${ti.key}" style="display: inline-block;">
+                                <label th:for="${#ids.prev('time')}" th:text="${ti.value}" style="display: inline-block;"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="float: left; margin-right: 5px; margin-left: 3px;">
+                        <label style="display: inline-block; margin-right: 5px; font-weight: bold; background-color: rgba(255, 255, 0, 0.3);" >인원 :</label>
+                        <div style="display: inline-block;">
+                            <div th:each="people : ${people}" style="display: inline-block; margin-right: 5px;">
+                                <input type="checkbox" th:field="*{people}" th:value="${people.key}" style="display: inline-block;">
+                                <label th:for="${#ids.prev('people')}" th:text="${people.value}" style="display: inline-block;"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="margin-right: 10px; margin-left: 10px"></div>
                 </div>
-                <div style="float: left; margin-right: 10px; margin-left: 10px">|</div>
-                <div th:each="time : ${times}" style="float: left; margin-right: 5px; margin-left: 5px">
-                    <input type="checkbox" th:field="*{times}" th:value="${time.key}">
-                    <label th:for="${#ids.prev('times')}" th:text="${time.value}"></label>
+                <div class="form-group">
+                    <label for="title">제목</label>
+                    <input type="text" class="form-control"
+                           th:classappend="${#fields.hasErrors('title')} ? 'is-invalid'"
+                           id="title" th:field="*{title}">
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">
+                        제목 에러 메시지
+                    </div>
                 </div>
-                <div style="float: left; margin-right: 10px; margin-left: 10px">|</div>
-                <div th:each="ti : ${time}" style="float: left; margin-right: 5px; margin-left: 5px">
-                    <input type="checkbox" th:field="*{time}" th:value="${ti.key}">
-                    <label th:for="${#ids.prev('time')}" th:text="${ti.value}"></label>
+                <div class="form-group">
+                    <label for="content">내용</label>
+                    <textarea class="form-control" th:classappend="${#fields.hasErrors('content')} ? 'is-invalid'"
+                              id="content" rows="3" th:field="*{content}"></textarea>
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('content')}" th:errors="*{content}">
+                        내용 에러 메시지
+                    </div>
                 </div>
-                <div style="float: left; margin-right: 10px; margin-left: 10px">|</div>
-                <div th:each="people : ${people}" style="float: left; margin-right: 5px; margin-left: 5px">
-                    <input type="checkbox" th:field="*{people}" th:value="${people.key}">
-                    <label th:for="${#ids.prev('people')}" th:text="${people.value}"></label>
+                <div>
+                    <div onclick="boardWrite()" class="btn btn-dark">확인</div>
+                    <a type="button" class="btn btn-dark" th:href="@{/board/list(type=${board.type})}">취소</a>
                 </div>
-                <div style="margin-right: 10px; margin-left: 10px">|</div>
-            </div>
-            <div>&nbsp;</div>
-            <div class="form-group">
-                <label for="title">제목</label>
-                <input type="text" class="form-control" th:classappend="${#fields.hasErrors('title')} ? 'is-invalid'"
-                       id="title" th:field="*{title}">
-                <div class="invalid-feedback" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">
-                    제목 에러 메시지
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="content">내용</label>
-                <textarea class="form-control" th:classappend="${#fields.hasErrors('content')} ? 'is-invalid'"
-                          id="content" rows="3" th:field="*{content}"></textarea>
-                <div class="invalid-feedback" th:if="${#fields.hasErrors('content')}" th:errors="*{content}">
-                    내용 에러 메시지
-                </div>
-            </div>
-            <div>
-                <div onclick="boardWrite()" class="btn btn-primary">확인</div>
-                <a type="button" class="btn btn-primary" th:href="@{/board/list(type=${board.type})}">취소</a>
             </div>
         </form>
     </div>
@@ -125,7 +145,7 @@
         // if(document.getElementById("title").value.trim() == '') {
         //     alert("제목은 필수 입력 사항입니다");
         // } else
-        if(document.getElementById("title").value.length < 2) {
+        if (document.getElementById("title").value.length < 2) {
             alert("제목을 2글자 이상 입력해주세요");
         } else {
             document.getElementById("submitForm").submit();
