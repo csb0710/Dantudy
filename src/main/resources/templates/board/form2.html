@@ -147,7 +147,7 @@
                             <input type="hidden" name="boardId" th:value="${board.id}"/>
                             <input type="hidden" name="commentId" th:value="${comment.id}"/>
 
-                            <button type="submit" class="btn btn-dark">수락</button>
+                            <button onclick="acceptStudy()" type="submit" class="btn btn-dark">수락</button>
                         </form>
                     </td>
                     <td>
@@ -228,5 +228,10 @@
 
 
     }
+
+    const acceptStudy = () => {
+        alert("수락되었습니다");
+    }
+
 </script>
 </html>

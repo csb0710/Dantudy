@@ -254,7 +254,7 @@ public class BoardController {
         return "redirect:/board/list";
     }
     @PostMapping("/board/acceptStudy")
-    public String acceptComment(@RequestParam("boardId") Integer boardId, @RequestParam("commentId") Integer commentId) {
+    public String acceptComment(@RequestParam("boardId") Integer boardId, @RequestParam("commentId") Integer commentId, HttpServletRequest request) {
         Board board = boardRepository.findById(boardId).get();
         User user = commentRepository.findById(Long.valueOf(commentId)).get().getUser();
 
@@ -269,7 +269,7 @@ public class BoardController {
             boardService.write(board);
         }
 
-        return "redirect:/board/list"; // 원래 페이지로의 리다이렉션을 수행합니다.
+        return "redirect:"+ request.getHeader("Referer");
     }
 
     @PostMapping("/board/saveScore")
@@ -287,17 +287,17 @@ public class BoardController {
         return "redirect:"+ request.getHeader("Referer");
     }
 
-    @GetMapping("/board/completeDelete")
-    public String completeDel(@RequestParam("studyId") Integer studyId, @RequestParam Integer userId, Model model) {
-        User user = userRepository.findById(Long.valueOf(userId)).get();
-        Board board = boardRepository.findById(studyId).get();
-
-        user.getStudies().remove(board);
-
-        userRepository.save(user);
-
-        return "index";
-    }
+//    @GetMapping("/board/completeDelete")
+//    public String completeDel(@RequestParam("studyId") Integer studyId, @RequestParam Integer userId, Model model) {
+//        User user = userRepository.findById(Long.valueOf(userId)).get();
+//        Board board = boardRepository.findById(studyId).get();
+//
+//        user.getStudies().remove(board);
+//
+//        userRepository.save(user);
+//
+//        return "index";
+//    }
     @GetMapping("/board/completeInform")
     public String completeList(@RequestParam("studyId") Integer studyId, Model model, Principal principal) {
         List<User> list = boardRepository.findById(studyId).get().getMember();
@@ -343,7 +343,7 @@ public class BoardController {
             boardRepository.save(board);
             boardService.deleteView(id);
 
-            return "redirect:/board/list?type=" + board.getType();
+            return "redirect:/";
         } else {
 
             return "redirect:/main";
