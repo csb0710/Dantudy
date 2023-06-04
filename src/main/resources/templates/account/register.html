@@ -22,12 +22,11 @@
             $.ajax({
                 type: "post",
                 url: "/account/register/exists",
-                data: { "username": username },
+                data: {username : username},
                 success: function(result) {
                     if (result) {
                         // 아이디 중복됨
                         alert("중복된 아이디입니다.");
-                        //$("#submitBtn").prop("disabled", true); // 버튼 비활성화
                         document.getElementById("submitRegister").disabled = true;
                     }
                     else if(username == null) {
@@ -40,7 +39,6 @@
                         // 아이디 중복되지 않음
                         alert("사용할 수 있는 아이디입니다.");
                         document.getElementById("submitRegister").disabled = false;
-                        // $("#submitBtn").prop("disabled", false);
                     }
                 }
             });
@@ -58,7 +56,7 @@
             <div th:if="${valid_usernameif}" class="alert alert-danger" role="alert">
                 <span th:text="${valid_username}"></span>
             </div>
-            <button type="button" onclick="checkDuplicate()">중복 확인</button>
+            <button class="btn btn-dark btn-lg btn-block" type="button" onclick="checkDuplicate()">중복 확인</button>
         </div>
         <div>
             <label for="nickname" class="sr-only">nickname</label>
@@ -96,7 +94,7 @@
             <label for="inputMajor" class="sr-only">전공</label>
             <input th:attr="disabled=${valid_usernameif}" type="text" name="major" id="inputMajor" class="form-control" placeholder="전공" required>
         </div>
-        <button id="submitRegister" style="margin-top: 20px" class="btn btn-dark btn-lg btn-block" type="submit">회원가입</button>
+        <button disabled="true" id="submitRegister" style="margin-top: 20px" class="btn btn-dark btn-lg btn-block" type="submit">회원가입</button>
         <p class="mt-5 mb-3 text-muted"> @32194501 차승빈 오픈소스 프로젝트 </p>
     </form>
 </body>

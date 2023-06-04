@@ -132,25 +132,34 @@
                     </div>
                 </div>
                 <div>
-                    <div onclick="boardWrite()" class="btn btn-dark">확인</div>
+                    <div onclick="validateForm()" class="btn btn-dark">확인</div>
                     <a type="button" class="btn btn-dark" th:href="@{/board/list(type=${board.type})}">취소</a>
                 </div>
             </div>
+
+
         </form>
     </div>
 </main>
 </body>
-<script th:inline="javascript">
-    const boardWrite = () => {
-        // if(document.getElementById("title").value.trim() == '') {
-        //     alert("제목은 필수 입력 사항입니다");
-        // } else
+<script>
+    function validateForm() {
+        var periodChecked = document.querySelectorAll('input[name="period"]:checked').length;
+        var timesChecked = document.querySelectorAll('input[name="times"]:checked').length;
+        var timeChecked = document.querySelectorAll('input[name="time"]:checked').length;
+        var peopleChecked = document.querySelectorAll('input[name="people"]:checked').length;
+
+        if (periodChecked != 1 || timesChecked != 1 || timeChecked != 1 || peopleChecked != 1) {
+            alert("각 조건을 하니씩 선택해야 합니다.");
+            return false;
+        }
         if (document.getElementById("title").value.length < 2) {
             alert("제목을 2글자 이상 입력해주세요");
-        } else {
-            document.getElementById("submitForm").submit();
+            return false;
         }
-    }
 
+        // 폼 제출
+        document.getElementById("submitForm").submit();
+    }
 </script>
 </html>

@@ -44,7 +44,7 @@ public class UserService {
     }
 
     public boolean checkExist(String username) {
-        return userRepository.findByUsername(username) != null;
+        return userRepository.existsUserByUsername(username);
     }
 
     public Page<User> userSearchList(String searchKeyword, Pageable pageable) {

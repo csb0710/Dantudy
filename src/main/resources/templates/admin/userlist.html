@@ -29,39 +29,6 @@
 
 <body class="sb-nav-fixed">
 
-<!--<header class="p-3 text-bg-dark">-->
-<!--  <div class="container">-->
-<!--    <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">-->
-<!--      <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">-->
-<!--        <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap">-->
-<!--          <use xlink:href="#bootstrap"/>-->
-<!--        </svg>-->
-<!--      </a>-->
-
-<!--      <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">-->
-<!--        <li><a th:href="@{/}" class="nav-link px-2 text-white">Home</a></li>-->
-<!--        <li><a th:href="@{/board/list}" class="nav-link px-2 text-secondary">Board</a></li>-->
-<!--        <li><a href="#" class="nav-link px-2 text-white">Pricing</a></li>-->
-<!--        <li><a href="#" class="nav-link px-2 text-white">FAQs</a></li>-->
-<!--        <li><a href="#" class="nav-link px-2 text-white">About</a></li>-->
-<!--      </ul>-->
-
-<!--      <div class="text-end">-->
-<!--        &lt;!&ndash;                    <button type="button" class="btn btn-outline-light me-2">Login</button>&ndash;&gt;-->
-<!--        <a class="btn btn-outline-light me-2" th:href="@{/account/login}" sec:authorize="!isAuthenticated()">Login</a>-->
-<!--        <a class="btn btn-warning" th:href="@{/account/register}" sec:authorize="!isAuthenticated()">회원가입</a>-->
-<!--        <form class="form-inline my-2 my-lg-0" sec:authorize="isAuthenticated()" th:action="@{/logout}"-->
-<!--              method="post">-->
-<!--          <div style="margin-right: 5px" class="text-white">아이디 :</div>-->
-<!--          <span style="margin-right: 15px" class="text-white" sec:authentication="name">사용자</span>-->
-<!--          <div style="margin-right: 5px" class="text-white">권한 :</div>-->
-<!--          <span class="text-white mx-2" sec:authentication="principal.authorities" style="margin-right: 5px">권한</span>-->
-<!--          <button class="btn btn-secondary my-2 my-sm-0" type="submit">Logout</button>-->
-<!--        </form>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--  </div>-->
-<!--</header>-->
 <main class="mt-5 pt-5">
   <div class="container-fluid px-4">
     <h1 class="mt-4">User</h1>
@@ -97,7 +64,8 @@
             <td th:text="${user.roles.get(0).getName()}"></td>
             <td><a th:text="게시글" th:href="@{/admin/user/board(searchKeyword=${user.username})}"></a></td>
 <!--            <td><a th:text="board" th:href="@{admin/board/list(serchKeyword=${user.username})}"></a></td>-->
-            <td><a th:text="댓글" th:href="@{/admin/user/comment(searchKeyword=${user.username})}"></a></td>
+<!--            <td><a th:text="댓글" th:href="@{/admin/user/comment(searchKeyword=${user.username})}"></a></td>-->
+            <td><a th:href="@{/users/inform(id=*{user.id})}" style="display: inline-block; margin-left: 20px">정보 보기</a></td>
             <td></td>
             <td id="test1">
               <form th:action="@{/admin/user/delete/{id}(id=${user.id})}" method="get">

@@ -19,7 +19,7 @@ public class Role {
 
     private String name;
 
-    @ManyToMany(mappedBy = "roles")
+    @ManyToMany(mappedBy = "roles", cascade = CascadeType.REMOVE)
     @JsonIgnore
     private List<User> users;
 }

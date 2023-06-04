@@ -42,7 +42,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
         http
                 .csrf().disable()
                 .authorizeHttpRequests((requests) -> requests
-                        .antMatchers("/", "board/writepro", "/board/list", "/account/register", "/css/**", "/img/**", "/scripts/**", "/js/**", "/api/**", "/css/signin.css", "/css/headers.css").permitAll()
+                        .antMatchers("/", "board/writepro", "/board/list", "/account/register", "/account/register/exists", "/css/**", "/img/**", "/scripts/**", "/js/**", "/api/**", "/css/signin.css", "/css/headers.css").permitAll()
                         .antMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )

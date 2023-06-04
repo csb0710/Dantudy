@@ -4,6 +4,8 @@ import com.study.board2.entity.User;
 import com.study.board2.service.AccountService;
 import com.study.board2.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -28,9 +30,10 @@ public class AccountController {
     }
 
     @PostMapping("/register/exists")
-    public boolean checkUsername(@RequestParam String username) {
-        System.out.println("ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ");
-        return userService.checkExist(username);
+    //@ResponseBody
+    public ResponseEntity checkUsername(@RequestParam("username") String username) {
+        boolean result = userService.checkExist(username);
+        return new ResponseEntity(result, HttpStatus.OK);
     }
 
     @GetMapping("/register")
