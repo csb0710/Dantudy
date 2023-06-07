@@ -63,6 +63,6 @@ public class AccountController {
 
         userService.save(user);
 
-        return "redirect:/board/list";
+        return "redirect:/account/login";
     }
 }

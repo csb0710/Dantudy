@@ -246,12 +246,12 @@ public class BoardController {
         }
     }
     @PostMapping("/board/updateUrl")
-    public String updateUrl(@RequestParam("boardId") Integer boardId, @RequestParam("url") String url) {
+    public String updateUrl(@RequestParam("boardId") Integer boardId, @RequestParam("url") String url, HttpServletRequest request) {
         Board board = boardRepository.findById(boardId).get();
         board.setKakaoURL(url);
         boardRepository.save(board);
 
-        return "redirect:/board/list";
+        return "redirect:"+ request.getHeader("Referer");
     }
     @PostMapping("/board/acceptStudy")
     public String acceptComment(@RequestParam("boardId") Integer boardId, @RequestParam("commentId") Integer commentId, HttpServletRequest request) {
